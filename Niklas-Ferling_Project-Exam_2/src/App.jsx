@@ -3,7 +3,7 @@ import "./App.css";
 function App() {
   return (
     <>
-      <h1 className="text-lg">Hello TailwindCSS</h1>
+      <h1 className="text-3xl">Hello TailwindCSS</h1>
     </>
   );
 }
