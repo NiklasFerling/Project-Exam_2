@@ -1,10 +1,18 @@
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <>
-      <h1 className="text-3xl">Hello TailwindCSS</h1>
-    </>
+    <div>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 
