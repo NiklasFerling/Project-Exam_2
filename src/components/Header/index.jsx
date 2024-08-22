@@ -7,9 +7,13 @@ function Header() {
         <Link to="/">
           <p>LOGO</p>
         </Link>
-        <Link to="profile">
-          <i className="fa-regular fa-user"></i>
-        </Link>
+        <div className="flex gap-3">
+          <Link to="profile">
+            <i className="fa-regular fa-user"></i>
+          </Link>
+          <Link to="login">Log in</Link>
+          <Link to="register">Register</Link>
+        </div>
       </nav>
     </header>
   );
