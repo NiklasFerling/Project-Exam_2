@@ -1,16 +1,14 @@
 import ReactCalendar from "react-calendar";
 
-const datesToAddClassTo = [tomorrow, in3Days, in5Days];
+// const datesToAddClassTo = [tomorrow, in3Days, in5Days];
 
-function tileClassName({ date, view }) {
-  // Add class to tiles in month view only
-  if (view === "month") {
-    // Check if a date React-Calendar wants to check is on the list of dates to add class to
-    if (datesToAddClassTo.find((dDate) => isSameDay(dDate, date))) {
-      return "myClassName";
-    }
-  }
-}
+// function tileClassName({ date, view }) {
+//   if (view === "month") {
+//     if (datesToAddClassTo.find((dDate) => isSameDay(dDate, date))) {
+//       return "myClassName";
+//     }
+//   }
+// }
 
 function Calendar() {
   return (

@@ -1,14 +1,16 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import login from "../../api/auth/login";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
 });
 
-function onLogin(data) {
-  console.log(data);
+function onLogin({ email, password }) {
+  console.log(email, password);
+  login(email, password);
 }
 
 function LoginForm() {
