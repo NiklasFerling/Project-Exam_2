@@ -2,18 +2,16 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import login from "../../api/auth/login";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/authContext";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
 });
 
-function onLogin({ email, password }) {
-  console.log(email, password);
-  login(email, password);
-}
-
 function LoginForm() {
+  const { setIsLoggedIn } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -21,6 +19,16 @@ function LoginForm() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  async function onLogin({ email, password }) {
+    console.log(email, password);
+    try {
+      await login(email, password);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onLogin)} className="flex flex-col">
