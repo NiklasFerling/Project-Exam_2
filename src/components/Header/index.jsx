@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
+import { useEffect } from "react";
+import { load } from "../../storage/load";
 
 function Header() {
   const { isLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    const token = load("accessToken");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, [load, setIsLoggedIn]);
 
   return (
     <header className="sticky top-0 px-10 bg-green-100/50 backdrop-blur-sm z-50 border border-b-green-200">

@@ -4,6 +4,7 @@ import * as yup from "yup";
 import login from "../../api/auth/login";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
+import { load } from "../../storage/load";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -24,7 +25,11 @@ function LoginForm() {
     console.log(email, password);
     try {
       await login(email, password);
-      setIsLoggedIn(true);
+      const token = load("accessToken");
+      if (token) {
+        setIsLoggedIn(true);
+        window.location.href = "/";
+      }
     } catch (error) {
       console.error("Login failed", error);
     }

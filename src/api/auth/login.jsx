@@ -1,6 +1,3 @@
-import React from "react";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/authContext";
 import save from "../../storage/save";
 
 async function login(email, password) {

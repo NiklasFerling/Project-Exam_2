@@ -1,8 +1,19 @@
 import React, { useState } from "react";
+import { logout } from "../../api/auth/logout";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/authContext";
 
 function Profile() {
   const [displayBookings, setDisplayBookings] = useState(false);
   const [displayVenues, setDisplayVenues] = useState(false);
+  const { setIsLoggedIn } = useContext(AuthContext);
+
+  function onLogout() {
+    logout();
+    setIsLoggedIn(false);
+    window.location.href = "/";
+  }
 
   return (
     <div className="h-screen">
@@ -49,7 +60,7 @@ function Profile() {
               setDisplayBookings(!displayBookings);
               setDisplayVenues(false);
             }}
-            className="p-4 bg-gradient-to-bl from-green-200 via-teal-50 to-green-200 border border-white rounded-lg "
+            className="p-4 bg-gradient-to-bl from-green-200/50 via-teal-50 to-green-200/50 border border-white rounded-lg"
           >
             <i className="fa-solid fa-bed"></i>
             <p>Your Bookings</p>
@@ -59,10 +70,17 @@ function Profile() {
               setDisplayVenues(!displayVenues);
               setDisplayBookings(false);
             }}
-            className="p-4 bg-gradient-to-bl from-green-200 via-teal-50 to-green-200 border border-white rounded-lg "
+            className="p-4 bg-gradient-to-bl from-green-200/50 via-teal-50 to-green-200/50 border border-white rounded-lg"
           >
             <i className="fa-solid fa-building"></i>
             <p>Your Venues</p>
+          </button>
+          <button
+            onClick={onLogout}
+            className="p-4 bg-gradient-to-bl from-red-200/50 via-red-50 to-red-200/50 border border-white rounded-lg"
+          >
+            <i className="fa-solid fa-sign-out"></i>
+            <p>Logout</p>
           </button>
         </div>
       </div>
