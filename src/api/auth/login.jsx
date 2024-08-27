@@ -3,9 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import save from "../../storage/save";
 
-async function useLogin(email, password) {
-  const { setIsLoggedIn } = useContext(AuthContext);
-
+async function login(email, password) {
   try {
     const response = await fetch("https://v2.api.noroff.dev/auth/login", {
       method: "POST",
@@ -22,7 +20,6 @@ async function useLogin(email, password) {
       return data.errors[0].message;
     }
     save("accessToken", data.data.accessToken);
-    // setIsLoggedIn(true);
     console.log("logged in");
     return data;
   } catch (error) {
@@ -30,4 +27,4 @@ async function useLogin(email, password) {
   }
 }
 
-export default useLogin;
+export default login;
