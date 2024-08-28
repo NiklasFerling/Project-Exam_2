@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -28,46 +29,49 @@ function RegisterForm() {
     resolver: yupResolver(schema),
   });
 
-  const [error, setError] = useState(null);
+  const [registerMessage, setRegisterMessage] = useState(null);
 
-  function onRegister({ name, email, password }) {
-    async function register(name, email, password) {
-      console.log("name, email, password");
-      try {
-        const response = await fetch(
-          "https://v2.api.noroff.dev/auth/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: name,
-              email: email,
-              password: password,
-            }),
-          }
+  async function onRegister({ name, email, password }) {
+    try {
+      const response = await fetch("https://v2.api.noroff.dev/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.data) {
+        console.log(data);
+        setRegisterMessage(
+          <p className="p-2 bg-green-200 border border-green-600 rounded-lg">
+            User registered sucessfully!
+            <Link to="/login" className="text-blue-500 ml-3">
+              login
+            </Link>
+          </p>
         );
-        const data = await response.json();
-        if (!data.ok) {
-          throw new Error(data.errors[0].message);
-        } else if (data.ok) {
-          console.log(data);
-        }
-      } catch (err) {
-        setError(err);
+      } else if (data.errors) {
+        setRegisterMessage(
+          <p className="p-2 bg-red-200 border border-red-600 rounded-lg">
+            {data.errors[0].message}
+          </p>
+        );
+        throw new Error(data.errors[0].message);
       }
+    } catch (err) {
+      console.log(err);
     }
-    register(name, email, password);
   }
 
   return (
     <form onSubmit={handleSubmit(onRegister)} className="flex flex-col">
-      {error ? (
-        <p className="bg-red-100 border border-red-400 rounded-md p-2">
-          {error.message}
-        </p>
-      ) : null}
+      {registerMessage ? registerMessage : null}
       <label htmlFor="name" className="mt-3">
         Name
       </label>

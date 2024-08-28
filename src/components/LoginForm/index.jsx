@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import login from "../../api/auth/login";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import { load } from "../../storage/load";
+import { save } from "../../storage/save";
+import { useState } from "react";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -21,10 +22,29 @@ function LoginForm() {
     resolver: yupResolver(schema),
   });
 
+  const [error, setErrors] = useState(null);
+
   async function onLogin({ email, password }) {
     console.log(email, password);
     try {
-      await login(email, password);
+      const response = await fetch("https://v2.api.noroff.dev/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.data) {
+        setErrors(null);
+        console.log(data.data.accessToken);
+      } else if (!data.ok) {
+        setErrors(data.errors[0].message);
+        throw new Error(data.errors[0].message);
+      }
+      save("accessToken", data.data.accessToken);
+      console.log("logged in");
       const token = load("accessToken");
       if (token) {
         setIsLoggedIn(true);
@@ -37,6 +57,11 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onLogin)} className="flex flex-col">
+      {error ? (
+        <p className="p-2 bg-red-200 border border-red-600 rounded-lg">
+          {error}
+        </p>
+      ) : null}
       <label htmlFor="email" className="mt-3">
         Email
       </label>
