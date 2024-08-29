@@ -16,15 +16,15 @@ function Profile() {
   }
 
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <h1 className="text-center text-3xl pt-20 mb-10">Your Profile</h1>
-      <div className="flex justify-center items-center gap-4">
-        <div className="flex flex-row border border-white rounded-xl overflow-hidden bg-white/25 drop-shadow-3xl backdrop-blur-lg">
+      <div className="flex justify-center items-center gap-4 flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row gap-4 items-center">
           <img
             src="https://randomuser.me/api/portraits"
-            className="w-52 bg-green-300"
+            className="h-40 w-40 border-0 rounded-full bg-green-300"
           />
-          <div className="m-4">
+          <div className="p-4 border border-white rounded-xl bg-white/25 drop-shadow-3xl backdrop-blur-lg">
             <p className="text-sm text-neutral-700">Name:</p>
             <p className="font-semibold text-lg mb-2">Niklas Ferling</p>
             <p className="text-sm text-neutral-700">Email:</p>
@@ -54,7 +54,7 @@ function Profile() {
             </form>
           </div>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-row md:flex-col gap-3">
           <button
             onClick={() => {
               setDisplayBookings(!displayBookings);
