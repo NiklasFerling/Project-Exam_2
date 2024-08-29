@@ -54,7 +54,7 @@ function SearchForm() {
       <div className="border rounded-lg border-green-200 py-2 px-5 flex drop-shadow-3xl bg-white">
         <input
           {...register("search")}
-          placeholder="Search for a city"
+          placeholder="search for a venue"
           className="flex-1 focus:outline-none bg-green-200/0"
         />
         <button type="submit">
