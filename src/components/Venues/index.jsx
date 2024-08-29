@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { VenuesContext } from "../../contexts/venuesContext";
+import VenueCard from "../VenueCard";
 
 function Venues() {
   const { venues, setVenues } = useContext(VenuesContext);
@@ -36,14 +37,9 @@ function Venues() {
   }
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 justify-center">
       {venues.data.map((venue) => (
-        <div key={venue.id} className="w-72 ">
-          <img src={venue.media[0]?.url} alt={venue.name} className="w-full" />
-          <h2>{venue.name}</h2>
-          <p>{venue.description}</p>
-          <p>{venue.price}</p>
-        </div>
+        <VenueCard key={venue.id} venue={venue} />
       ))}
     </div>
   );
