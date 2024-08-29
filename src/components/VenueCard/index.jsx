@@ -6,7 +6,7 @@ function VenueCard({ venue }) {
   }
 
   return (
-    <div className="flex-col w-80 overflow-hidden border rounded-xl mb-10 font-semibold">
+    <div className="flex-col w-72 overflow-hidden border rounded-xl mb-10 font-semibold">
       <img
         src={venue.media[0].url}
         alt={venue.media[0].alt}
