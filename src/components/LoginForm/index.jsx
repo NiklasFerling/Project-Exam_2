@@ -62,7 +62,7 @@ function LoginForm() {
           {error}
         </p>
       ) : null}
-      <label htmlFor="email" className="mt-3">
+      <label htmlFor="email" className="mt-1">
         Email
       </label>
       <input
