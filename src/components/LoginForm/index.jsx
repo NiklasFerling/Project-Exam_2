@@ -25,7 +25,6 @@ function LoginForm() {
   const [error, setErrors] = useState(null);
 
   async function onLogin({ email, password }) {
-    console.log(email, password);
     try {
       const response = await fetch("https://v2.api.noroff.dev/auth/login", {
         method: "POST",
@@ -35,7 +34,6 @@ function LoginForm() {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      console.log(data.data);
       if (data.data) {
         setErrors(null);
         setIsLoggedIn(true);

@@ -14,7 +14,6 @@ function Venues() {
           "https://v2.api.noroff.dev/holidaze/venues"
         );
         const data = await response.json();
-        console.log(data.data);
 
         setVenues(data);
         setLoading(false);

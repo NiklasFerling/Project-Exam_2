@@ -27,7 +27,6 @@ function SearchForm() {
         );
         const json = await response.json();
         if (json.data) {
-          console.log(json.data);
           setVenues(json);
         }
       } catch (error) {
@@ -41,7 +40,6 @@ function SearchForm() {
         );
         const json = await response.json();
         if (json.data) {
-          console.log(json.data);
           setVenues(json);
         }
       } catch (error) {

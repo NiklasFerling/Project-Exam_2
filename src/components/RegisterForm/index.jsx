@@ -45,9 +45,7 @@ function RegisterForm() {
         }),
       });
       const data = await response.json();
-      console.log(data);
       if (data.data) {
-        console.log(data);
         setRegisterMessage(
           <p className="p-2 bg-green-200 border border-green-600 rounded-lg">
             User registered sucessfully!
