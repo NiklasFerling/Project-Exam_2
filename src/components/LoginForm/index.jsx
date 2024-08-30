@@ -3,9 +3,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
-import { load } from "../../storage/load";
 import { save } from "../../storage/save";
 import { useState } from "react";
+import { fetchApiKey } from "../../api/auth/ApiKey";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -13,7 +13,7 @@ const schema = yup.object().shape({
 });
 
 function LoginForm() {
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -35,20 +35,19 @@ function LoginForm() {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      console.log(data);
+      console.log(data.data);
       if (data.data) {
         setErrors(null);
-        console.log(data.data.accessToken);
+        setIsLoggedIn(true);
+        save("profile", data.data);
+        save("accessToken", data.data.accessToken);
+        fetchApiKey().then((data) => {
+          save("API_KEY", data.data.key);
+        });
+        window.location.href = "/";
       } else if (!data.ok) {
         setErrors(data.errors[0].message);
         throw new Error(data.errors[0].message);
-      }
-      save("accessToken", data.data.accessToken);
-      console.log("logged in");
-      const token = load("accessToken");
-      if (token) {
-        setIsLoggedIn(true);
-        window.location.href = "/";
       }
     } catch (error) {
       console.error("Login failed", error);

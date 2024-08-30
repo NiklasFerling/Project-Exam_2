@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { logout } from "../../api/auth/logout";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
+import { load } from "../../storage/load";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { fetchProfile } from "../../api/profile/read";
+
+const schema = yup.object().shape({
+  avatar: yup.string().required(),
+  venueManager: yup.boolean(),
+});
 
 function Profile() {
   const [displayBookings, setDisplayBookings] = useState(false);
   const [displayVenues, setDisplayVenues] = useState(false);
+  const [isManager, setIsManager] = useState(null);
   const { setIsLoggedIn } = useContext(AuthContext);
+  const profile = load("profile");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
 
   function onLogout() {
     logout();
@@ -14,35 +31,40 @@ function Profile() {
     window.location.href = "/";
   }
 
+  function onProfileUpdate(data) {}
+
+  fetchProfile().then((data) => {
+    setIsManager(data.data.venueManager);
+  });
+
   return (
     <div className="min-h-screen">
       <h1 className="text-center text-3xl pt-20 mb-10">Your Profile</h1>
       <div className="flex justify-center items-center gap-4 flex-col md:flex-row">
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <img
-            src="https://randomuser.me/api/portraits"
+            src={profile.avatar.url}
             className="h-40 w-40 border-0 rounded-full bg-green-300"
           />
           <div className="p-4 border border-white rounded-xl bg-white/25 drop-shadow-3xl backdrop-blur-lg">
             <p className="text-sm text-neutral-700">Name:</p>
-            <p className="font-semibold text-lg mb-2">Niklas Ferling</p>
+            <p className="font-semibold text-lg mb-2">{profile.name}</p>
             <p className="text-sm text-neutral-700">Email:</p>
-            <p className="font-semibold text-lg mb-2">
-              niklas.ferling@gmail.com
-            </p>
-            <form>
+            <p className="font-semibold text-lg mb-2">{profile.email}</p>
+            <form onSubmit={handleSubmit(onProfileUpdate)}>
               <p className="text-sm text-neutral-700 mb-2">Avatar:</p>
               <input
-                type="text"
+                {...register("avatar")}
+                placeholder={profile.avatar.url}
                 className="mb-3 p-2 border border-green-200 rounded-xl w-96"
-                placeholder="Enter URL"
               />
               <p className="text-sm text-neutral-700">Venue Manager:</p>
               <div className="flex gap-2">
-                <input type="radio" />
-                <p className="font-semibold text-lg">Yes</p>
-                <input type="radio" className="ml-2" />
-                <p className="font-semibold text-lg">No</p>
+                <select {...register("venueManager")}>
+                  <option value="null">Current</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
               </div>
               <button
                 type="submit"
