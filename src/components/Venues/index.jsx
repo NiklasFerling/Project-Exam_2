@@ -36,7 +36,7 @@ function Venues() {
   }
 
   return (
-    <div className="flex flex-wrap justify-between max-w-7xl mx-auto">
+    <div className="flex flex-wrap justify-center gap-4 max-w-7xl mx-auto">
       {venues.data.map((venue) => (
         <VenueCard key={venue.id} venue={venue} />
       ))}
