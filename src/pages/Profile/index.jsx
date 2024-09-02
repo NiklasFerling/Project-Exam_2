@@ -10,16 +10,15 @@ import { fetchProfile } from "../../api/profile/read";
 import { updateProfile } from "../../api/profile/update";
 
 const schema = yup.object().shape({
-  avatar: yup.string().required(),
+  avatar: yup.string().required("Avatar is required"),
   venueManager: yup.boolean(),
 });
 
 function Profile() {
   const [displayBookings, setDisplayBookings] = useState(false);
   const [displayVenues, setDisplayVenues] = useState(false);
-  const [isManager, setIsManager] = useState(null);
+  const [profile, setProfile] = useState(null);
   const { setIsLoggedIn } = useContext(AuthContext);
-  const profile = load("profile");
   const {
     register,
     handleSubmit,
@@ -36,11 +35,48 @@ function Profile() {
     updateProfile(data);
   }
 
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetchProfile().then((data) => {
-      setIsManager(data.data.venueManager);
-    });
-  }, [setIsManager]);
+    async function fetchProfile() {
+      try {
+        setLoading(true);
+        const profile = load("profile");
+        const apiKey = load("API_KEY");
+
+        const response = await fetch(
+          "https://v2.api.noroff.dev/holidaze/profiles/" + profile.name,
+          {
+            headers: {
+              Authorization: `Bearer ${profile.accessToken}`,
+              "X-Noroff-API-Key": apiKey,
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        setProfile(data.data);
+        setLoading(false);
+        return data;
+      } catch (err) {
+        setError(true);
+        setLoading(false);
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProfile();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error</div>;
+  }
 
   return (
     <div className="min-h-screen">
@@ -49,7 +85,7 @@ function Profile() {
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <img
             src={profile.avatar.url}
-            className="h-40 w-40 border-0 rounded-full bg-green-300"
+            className="h-40 w-40 border-0 rounded-full bg-green-200/50 object-cover"
           />
           <div className="p-4 border border-white rounded-xl bg-white/25 drop-shadow-3xl backdrop-blur-lg">
             <p className="text-sm text-neutral-700">Name:</p>
@@ -60,15 +96,18 @@ function Profile() {
               <p className="text-sm text-neutral-700 mb-2">Avatar:</p>
               <input
                 {...register("avatar")}
-                placeholder={profile.avatar.url}
-                className="mb-3 p-2 border border-green-200 rounded-xl w-96"
+                defaultValue={profile.avatar.url || ""}
+                className="p-2 border border-green-200 rounded-xl w-96"
               />
-              <p className="text-sm text-neutral-700">Venue Manager:</p>
+              <p>{errors.avatar?.message}</p>
+              <p className="text-sm text-neutral-700 mt-3">Venue Manager:</p>
               <div className="flex gap-2">
                 <select {...register("venueManager")}>
-                  <option value={isManager}>{isManager ? "Yes" : "No"}</option>
-                  <option value={isManager ? "false" : "true"}>
-                    {isManager ? "No" : "Yes"}
+                  <option value={profile.venueManager}>
+                    {profile.venueManager ? "Yes" : "No"}
+                  </option>
+                  <option value={profile.venueManager ? "false" : "true"}>
+                    {profile.venueManager ? "No" : "Yes"}
                   </option>
                 </select>
               </div>
