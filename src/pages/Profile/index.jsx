@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { fetchProfile } from "../../api/profile/read";
+import { updateProfile } from "../../api/profile/update";
 
 const schema = yup.object().shape({
   avatar: yup.string().required(),
@@ -31,11 +32,15 @@ function Profile() {
     window.location.href = "/";
   }
 
-  function onProfileUpdate(data) {}
+  function onProfileUpdate(data) {
+    updateProfile(data);
+  }
 
-  fetchProfile().then((data) => {
-    setIsManager(data.data.venueManager);
-  });
+  useEffect(() => {
+    fetchProfile().then((data) => {
+      setIsManager(data.data.venueManager);
+    });
+  }, [setIsManager]);
 
   return (
     <div className="min-h-screen">
@@ -61,9 +66,10 @@ function Profile() {
               <p className="text-sm text-neutral-700">Venue Manager:</p>
               <div className="flex gap-2">
                 <select {...register("venueManager")}>
-                  <option value="null">Current</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
+                  <option value={isManager}>{isManager ? "Yes" : "No"}</option>
+                  <option value={isManager ? "false" : "true"}>
+                    {isManager ? "No" : "Yes"}
+                  </option>
                 </select>
               </div>
               <button
