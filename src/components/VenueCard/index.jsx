@@ -1,10 +1,15 @@
+import { Link } from "react-router-dom";
+
 function VenueCard({ venue }) {
   function truncateText(text, maxLength = 25) {
     return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
   }
 
   return (
-    <div className="flex-col w-40 md:w-72 overflow-hidden border rounded-xl mb-10 font-semibold bg-white drop-shadow-3xl hover:scale-105 transition-transform">
+    <Link
+      to={"/venue/id?" + venue.id}
+      className="flex-col w-40 md:w-72 overflow-hidden border rounded-xl mb-10 font-semibold bg-white drop-shadow-3xl hover:scale-105 transition-transform"
+    >
       <img
         src={venue.media[0].url}
         alt={venue.media[0].alt}
@@ -24,7 +29,7 @@ function VenueCard({ venue }) {
         </p>
         <p className="text-xl mt-5">{venue.price}kr</p>
       </div>
-    </div>
+    </Link>
   );
 }
 export default VenueCard;

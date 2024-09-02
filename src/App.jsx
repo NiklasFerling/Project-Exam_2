@@ -14,8 +14,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="*" element={<h1>Page not found</h1>} />
           <Route path="venue/:id" element={<Venue />} />
+          <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
