@@ -1,7 +1,26 @@
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import HighlightedDatesCalendar from "../../components/Calendar";
 
-function Venue() {
+const schema = yup.object().shape({
+  guests: yup.number().required("Guests is required"),
+  dateFrom: yup.date().required("From is required"),
+  dateTo: yup.date().required("To is required"),
+});
+
+const Venue = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
+  function onBook(data) {
+    console.log(data);
+  }
+
   const [venue, setVenue] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -41,7 +60,7 @@ function Venue() {
         <img
           src={venue.media[0].url}
           alt={venue.media[0].alt}
-          className="bg-green-300 w-96"
+          className="bg-green-300 w-96 object-cover"
         />
         <div className="p-5">
           <h1 className="text-3xl mb-4">{venue.name}</h1>
@@ -52,12 +71,32 @@ function Venue() {
               {venue.location.city}, {venue.location.country}
             </p>
           </span>
-          <p className="mb-5">{venue.price}/night</p>
-          <form className="flex gap-2 mb-5">
-            <input type="date" className="border border-black rounded-xl p-1" />
-            <p>-</p>
-            <input type="date" className="border border-black rounded-xl p-1" />
-            <button className="border border-black rounded-xl p-1">Book</button>
+          <span className="flex mb-5 gap-3">
+            <p className="text-xl text-center">{venue.price}kr/night</p>|
+            <p className="text-base">Max Capacity: 10</p>
+          </span>
+          <form className="mb-5 justify-center" onSubmit={handleSubmit(onBook)}>
+            <span className="flex justify-between mb-2">
+              <input
+                {...register("dateFrom")}
+                type="date"
+                className="border border-black rounded-xl p-1 w-32"
+              />
+              <p className="align-middle">to</p>
+              <input
+                {...register("dateTo")}
+                type="date"
+                className="border border-black rounded-xl p-1 w-32"
+              />
+              <input
+                type="number"
+                {...register("guests")}
+                className="border border-black rounded-xl p-1 w-10 text-center"
+              />
+            </span>
+            <button className="border border-black rounded-xl p-1 mx-auto">
+              Book
+            </button>
           </form>
           <span className="flex gap-2 items-center justify-center mb-2">
             <div className="h-4 w-4 bg-red-600 rounded-md"></div>
@@ -70,5 +109,5 @@ function Venue() {
       </div>
     </div>
   );
-}
+};
 export default Venue;
