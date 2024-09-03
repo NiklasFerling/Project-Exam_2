@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Calendar from "../../components/Calendar";
+import BasicDateCalendar from "../../components/Calendar";
 
 const schema = yup.object().shape({
   guests: yup.number().required("Guests is required"),
@@ -99,12 +99,10 @@ const Venue = () => {
             </button>
           </form>
           <span className="flex gap-2 items-center justify-center mb-2">
-            <div className="h-4 w-4 bg-red-600 rounded-md"></div>
+            <p>❌</p>
             <p>Not Available</p>
-            <div className="h-4 w-4 bg-green-600 rounded-md ml-4"></div>
-            <p>Available</p>
           </span>
-          <Calendar />
+          <BasicDateCalendar />
         </div>
       </div>
     </div>
