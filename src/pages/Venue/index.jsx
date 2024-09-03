@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import BasicDateCalendar from "../../components/Calendar";
+import DateCalendar from "../../components/Calendar";
 
 const schema = yup.object().shape({
   guests: yup.number().required("Guests is required"),
@@ -34,7 +34,6 @@ const Venue = () => {
           `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
         );
         const data = await response.json();
-        console.log(data);
         setVenue(data.data);
       } catch (error) {
         setError(true);
@@ -102,7 +101,7 @@ const Venue = () => {
             <p>❌</p>
             <p>Not Available</p>
           </span>
-          <BasicDateCalendar />
+          <DateCalendar id={venue.id} />
         </div>
       </div>
     </div>
