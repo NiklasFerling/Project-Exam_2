@@ -18,6 +18,7 @@ function Profile() {
   const [displayBookings, setDisplayBookings] = useState(false);
   const [displayVenues, setDisplayVenues] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [success, setSuccess] = useState(false);
   const { setIsLoggedIn } = useContext(AuthContext);
   const {
     register,
@@ -32,7 +33,11 @@ function Profile() {
   }
 
   function onProfileUpdate(data) {
-    updateProfile(data);
+    updateProfile(data).then(() => {
+      if (data) {
+        setSuccess(true);
+      }
+    });
   }
 
   const [error, setError] = useState(false);
@@ -111,12 +116,20 @@ function Profile() {
                   </option>
                 </select>
               </div>
-              <button
-                type="submit"
-                className="mt-3 bg-gradient-to-br from-teal-300 via-teal-100 to-teal-200 drop-shadow-3xl border border-teal-300 px-4 py-2 rounded-lg"
-              >
-                Update Details
-              </button>
+              <span className="flex justify-between">
+                <button
+                  type="submit"
+                  className="mt-3 bg-gradient-to-br from-teal-300 via-teal-100 to-teal-200 drop-shadow-3xl border border-teal-300 px-4 py-2 rounded-lg"
+                >
+                  Update Details
+                </button>
+                {success ? (
+                  <p className="text-green-500">
+                    Profile updated successfully
+                    <i className="fa-solid fa-check ml-2"></i>
+                  </p>
+                ) : null}
+              </span>
             </form>
           </div>
         </div>
