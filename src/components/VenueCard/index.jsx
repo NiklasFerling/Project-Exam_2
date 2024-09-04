@@ -8,7 +8,7 @@ function VenueCard({ venue }) {
   return (
     <Link
       to={"/venue/id?" + venue.id}
-      className="flex-col w-40 md:w-72 overflow-hidden border rounded-xl mb-10 font-semibold bg-white drop-shadow-3xl hover:scale-105 transition-transform"
+      className="flex-col w-40 md:w-72 overflow-hidden border rounded-xl mb-10 font-semibold bg-white drop-shadow-2xl hover:scale-105 transition-transform"
     >
       <img
         src={venue.media[0].url}

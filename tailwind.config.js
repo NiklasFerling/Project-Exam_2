@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       dropShadow: {
-        "3xl": "0 10px 8px rgba(220, 252, 231, .5)",
+        "3xl": "0 4px 20px hsla(110, 100%, 20%, 0.15)",
         "4xl": [
           "0 -4px 16px rgba(220, 252, 231, 1)",
           "0 -4px 16px rgba(220, 252, 231, 1)",

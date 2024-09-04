@@ -49,7 +49,7 @@ function SearchForm() {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-96 m-auto mb-40">
-      <div className="border rounded-lg border-green-200 py-2 px-5 flex drop-shadow-3xl bg-white">
+      <div className="rounded-lg py-2 px-5 flex drop-shadow-2xl bg-white">
         <input
           {...register("search")}
           placeholder="search for a venue"

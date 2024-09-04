@@ -69,12 +69,8 @@ function MyCalendar(props) {
   }, []);
 
   return (
-    <div>
-      <Calendar
-        // onChange={onChange}
-        // value={date}
-        tileClassName={tileClassName}
-      />
+    <div className="flex justify-center">
+      <Calendar tileClassName={tileClassName} className="drop-shadow-2xl" />
     </div>
   );
 }

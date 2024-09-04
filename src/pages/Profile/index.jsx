@@ -60,7 +60,6 @@ function Profile() {
           }
         );
         const data = await response.json();
-        console.log(data);
         setProfile(data.data);
         setLoading(false);
         return data;
@@ -102,12 +101,20 @@ function Profile() {
               <input
                 {...register("avatar")}
                 defaultValue={profile.avatar.url || ""}
-                className="p-2 border border-green-200 rounded-xl w-96"
+                className="p-2 rounded-xl w-96 mb-3"
               />
               <p>{errors.avatar?.message}</p>
-              <p className="text-sm text-neutral-700 mt-3">Venue Manager:</p>
+              <label
+                htmlFor="venueManager"
+                className="text-sm text-neutral-700"
+              >
+                Venue Manager:
+              </label>
               <div className="flex gap-2">
-                <select {...register("venueManager")}>
+                <select
+                  {...register("venueManager")}
+                  className="py-2 px-4 rounded-lg mt-2"
+                >
                   <option value={profile.venueManager}>
                     {profile.venueManager ? "Yes" : "No"}
                   </option>
@@ -119,7 +126,7 @@ function Profile() {
               <span className="flex justify-between">
                 <button
                   type="submit"
-                  className="mt-3 bg-gradient-to-br from-teal-300 via-teal-100 to-teal-200 drop-shadow-3xl border border-teal-300 px-4 py-2 rounded-lg"
+                  className="mt-3 bg-teal-500 text-white px-4 py-2 rounded-lg"
                 >
                   Update Details
                 </button>
