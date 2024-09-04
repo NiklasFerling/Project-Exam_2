@@ -7,11 +7,6 @@
   border-radius: 16px;
 }
 
-.custom-tile {
-  background-color: rgb(197, 34, 34) !important;
-  color: white !important;
-}
-
 .react-calendar__tile {
   position: relative;
 }
@@ -21,6 +16,11 @@
 }
 
 .react-calendar__tile--now {
-  background-color: rgb(187 247 208) !important;
+  background-color: rgb(187 247 208);
   color: black !important;
+}
+
+.custom-tile {
+  background-color: rgb(197, 34, 34) !important;
+  color: white !important;
 }
