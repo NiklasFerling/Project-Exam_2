@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import DateCalendar from "../../components/Calendar";
+import MyCalendar from "../../components/ReactCalendar";
 
 const schema = yup.object().shape({
   guests: yup.number().required("Guests is required"),
@@ -54,54 +54,63 @@ const Venue = () => {
   }
 
   return (
-    <div className="h-screen">
-      <div className="flex justify-center gap-5 mt-20 bg-green-100/50 w-fit mx-auto border border-green-200 rounded-xl overflow-hidden">
+    <div className="min-h-screen mb-20">
+      <div className="flex flex-col justify-center gap-5 mt-20  w-fit mx-auto ">
         <img
           src={venue.media[0].url}
           alt={venue.media[0].alt}
-          className="bg-green-300 w-96 object-cover"
+          className="bg-green-300 md:w-96 object-cover"
         />
-        <div className="p-5">
-          <h1 className="text-3xl mb-4">{venue.name}</h1>
-          <span className="flex mb-5 items-center">
-            <i className="fa-solid fa-star mr-1"></i>
-            <p className="mr-4">{venue.rating}</p>
-            <p>
-              {venue.location.city}, {venue.location.country}
-            </p>
-          </span>
-          <span className="flex mb-5 gap-3">
-            <p className="text-xl text-center">{venue.price}kr/night</p>|
-            <p className="text-base">Max Capacity: 10</p>
-          </span>
-          <form className="mb-5 justify-center" onSubmit={handleSubmit(onBook)}>
-            <span className="flex justify-between mb-2">
-              <input
-                {...register("dateFrom")}
-                type="date"
-                className="border border-black rounded-xl p-1 w-32"
-              />
-              <p className="align-middle">to</p>
-              <input
-                {...register("dateTo")}
-                type="date"
-                className="border border-black rounded-xl p-1 w-32"
-              />
-              <input
-                type="number"
-                {...register("guests")}
-                className="border border-black rounded-xl p-1 w-10 text-center"
-              />
+        <div className="p-5 mx-auto flex flex-col md:flex-row gap-5">
+          <div>
+            <h1 className="text-3xl mb-4">{venue.name}</h1>
+            <span className="flex mb-5 items-center">
+              <i className="fa-solid fa-star mr-1"></i>
+              <p className="mr-4">{venue.rating}</p>
+              <p>
+                {venue.location.city}, {venue.location.country}
+              </p>
             </span>
-            <button className="border border-black rounded-xl p-1 mx-auto">
-              Book
-            </button>
-          </form>
-          <span className="flex gap-2 items-center justify-center mb-2">
-            <p>❌</p>
-            <p>Not Available</p>
-          </span>
-          <DateCalendar id={venue.id} />
+            <span className="flex mb-5 gap-3">
+              <p className="text-xl text-center">{venue.price}kr/night</p>|
+              <p className="text-base">Max Capacity: 10</p>
+            </span>
+            <form
+              className="mb-5 justify-center  mt-5"
+              onSubmit={handleSubmit(onBook)}
+            >
+              <span className="flex mb-6 gap-2 sm:flex-row justify-center items-center mb-2">
+                <input
+                  {...register("dateFrom")}
+                  type="date"
+                  className="border border-black rounded-xl p-1"
+                />
+                <p className="align-middle">to</p>
+                <input
+                  {...register("dateTo")}
+                  type="date"
+                  className="border border-black rounded-xl p-1"
+                />
+              </span>
+              <span className="flex justify-center mb-2 gap-5">
+                <input
+                  type="number"
+                  {...register("guests")}
+                  className="border border-black rounded-xl p-1 w-10 text-center"
+                />
+                <button className="border border-black rounded-xl p-1">
+                  Book
+                </button>
+              </span>
+            </form>
+          </div>
+          <div>
+            <span className="flex gap-2 items-center justify-center mb-2">
+              <div className="w-4 h-4 rounded-md bg-red-400"></div>
+              <p>Not Available</p>
+            </span>
+            <MyCalendar id={venue.id} />
+          </div>
         </div>
       </div>
     </div>
