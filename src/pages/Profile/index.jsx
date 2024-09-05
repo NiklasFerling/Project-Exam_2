@@ -185,7 +185,9 @@ function Profile() {
       {displayBookings ? (
         <div>
           {bookings.map((booking) => (
-            <p key={booking.id}>{booking.venue.name}</p>
+            <div key={booking.id}>
+              <p>{booking.name}</p>
+            </div>
           ))}
         </div>
       ) : null}
