@@ -8,12 +8,18 @@ import { createBooking } from "../../api/bookings/create";
 const id = window.location.search.replace("?", "");
 
 const schema = yup.object().shape({
-  guests: yup.number().required("Guests is required"),
-  dateFrom: yup.date().required("From is required"),
-  dateTo: yup.date().required("To is required"),
+  guests: yup
+    .number("Please enter the number of guests")
+    .required("Please enter the number of guests"),
+  dateFrom: yup.date().required("Please select a from date"),
+  dateTo: yup.date().required("Please selct a to date"),
 });
 
-const Venue = () => {
+function Venue() {
+  const [venue, setVenue] = useState({});
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const {
     register,
     handleSubmit,
@@ -21,8 +27,9 @@ const Venue = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   function onBook(data) {
+    const id = window.location.search.replace("?", "");
     createBooking({ ...data, venueId: id }).then((json) => {
-      if (json.status === 200) {
+      if (json.data) {
         alert("Booking Successful");
       } else {
         alert("Booking Failed: " + json.status);
@@ -30,27 +37,26 @@ const Venue = () => {
     });
   }
 
-  const [venue, setVenue] = useState(null);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  async function idFetch() {
+    const id = window.location.search.replace("?", "");
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
+      );
+      const data = await response.json();
+      setVenue(data.data);
+      setLoading(false);
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function idFetch() {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
-        );
-        const data = await response.json();
-        setVenue(data.data);
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
     idFetch();
   }, [setVenue]);
 
@@ -60,7 +66,6 @@ const Venue = () => {
   if (error) {
     return <div>Error</div>;
   }
-
   return (
     <div className="min-h-screen mb-20">
       <div className="flex flex-col lg:flex-row justify-center gap-5 mt-10 mx-auto md:w-2/3 xl:max-w-2/3 xl:px-0">
@@ -125,6 +130,9 @@ const Venue = () => {
                   Book Now
                 </button>
               </span>
+              <p>{errors.guests?.message}</p>
+              <p>{errors.dateFrom?.message}</p>
+              <p>{errors.dateTo?.message}</p>
             </form>
           </div>
           <div>
@@ -140,5 +148,5 @@ const Venue = () => {
       </div>
     </div>
   );
-};
+}
 export default Venue;

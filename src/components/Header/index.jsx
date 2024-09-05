@@ -16,7 +16,7 @@ function Header() {
   }, [load, setIsLoggedIn]);
 
   return (
-    <header className="sticky top-0 px-10 bg-green-100/50 backdrop-blur-sm z-50 border border-b-green-200">
+    <header className="sticky top-0 px-10 bg-green-100/50 backdrop-blur-md z-50 border border-b-green-200">
       <nav className="flex justify-between py-5 text-sm font-semibold">
         <Link to="/">
           <p>Hollidaze</p>
