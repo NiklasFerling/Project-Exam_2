@@ -42,6 +42,29 @@ function Profile() {
     });
   }
 
+  async function onDelete(id) {
+    const apiKey = load("API_KEY");
+    const token = load("accessToken");
+
+    try {
+      const response = await fetch(
+        "https://v2.api.noroff.dev/holidaze/bookings/" + id,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": apiKey,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -78,6 +101,8 @@ function Profile() {
   useEffect(() => {
     fetchProfile();
     fetchBookings().then((data) => {
+      console.log(data.data[0]);
+
       setBookings(data.data);
     });
   }, []);
@@ -185,8 +210,24 @@ function Profile() {
       {displayBookings ? (
         <div>
           {bookings.map((booking) => (
-            <div key={booking.id}>
-              <p>{booking.name}</p>
+            <div className="flex gap-5 mb-10" key={booking.id}>
+              <img
+                src={booking.venue.media[0].url}
+                alt={booking.venue.media[0].alt}
+                className="h-40 w-60 object-cover"
+              />
+              <div>
+                <p className="text-xl mb-3">{booking.venue.name}</p>
+                <p>{booking.dateFrom}</p>
+                <p className="mb-3">{booking.dateTo}</p>
+                <p>Guests: {booking.guests}</p>
+              </div>
+              <div>
+                <button
+                  onClick={() => onDelete(booking.id)}
+                  className="fa-regular fa-x"
+                ></button>
+              </div>
             </div>
           ))}
         </div>
