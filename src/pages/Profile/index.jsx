@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { updateProfile } from "../../api/profile/update";
 import { fetchBookings } from "../../api/bookings/read";
+import { TailSpin } from "react-loader-spinner";
 
 const schema = yup.object().shape({
   avatar: yup.string().required("Avatar is required"),
@@ -82,7 +83,11 @@ function Profile() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TailSpin color="rgb(74 222 128)" />
+      </div>
+    );
   }
 
   if (error) {

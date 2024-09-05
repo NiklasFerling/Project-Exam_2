@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { VenuesContext } from "../../contexts/venuesContext";
 import VenueCard from "../VenueCard";
+import { TailSpin } from "react-loader-spinner";
 
 function Venues() {
   const { venues, setVenues } = useContext(VenuesContext);
@@ -26,7 +27,11 @@ function Venues() {
   }, [setVenues]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <TailSpin color="rgb(74 222 128)" />
+      </div>
+    );
   }
   if (error) {
     return <div>Something went wrong</div>;
