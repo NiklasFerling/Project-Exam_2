@@ -4,21 +4,28 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MyCalendar from "../../components/ReactCalendar";
 import { createBooking } from "../../api/bookings/create";
+import { TailSpin } from "react-loader-spinner";
+import { set } from "date-fns";
 
 const id = window.location.search.replace("?", "");
-
-const schema = yup.object().shape({
-  guests: yup
-    .number("Please enter the number of guests")
-    .required("Please enter the number of guests"),
-  dateFrom: yup.date().required("Please select a from date"),
-  dateTo: yup.date().required("Please selct a to date"),
-});
 
 function Venue() {
   const [venue, setVenue] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [bookingError, setBookingError] = useState(false);
+  const [maxGuests, setMaxGuests] = useState(1);
+
+  const schema = yup.object().shape({
+    guests: yup
+      .number("Please enter the number of guests")
+      .min(1, "Please enter a number")
+      .max(maxGuests, "Capacity for this venue is set at " + maxGuests)
+      .required("Please enter the number of guests"),
+    dateFrom: yup.date().required("Please select a from date"),
+    dateTo: yup.date().required("Please selct a to date"),
+  });
 
   const {
     register,
@@ -28,11 +35,14 @@ function Venue() {
 
   function onBook(data) {
     const id = window.location.search.replace("?", "");
+
     createBooking({ ...data, venueId: id }).then((json) => {
       if (json.data) {
-        alert("Booking Successful");
+        setBookingSuccess("Booking Successful");
       } else {
-        alert("Booking Failed: " + json.status);
+        console.log(json.errors[0].message);
+        setBookingSuccess(false);
+        setBookingError(`Booking Failed: ${json.errors[0].message}`);
       }
     });
   }
@@ -45,7 +55,10 @@ function Venue() {
         `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
       );
       const data = await response.json();
+      console.log(data.data);
+
       setVenue(data.data);
+      setMaxGuests(data.data.maxGuests);
       setLoading(false);
     } catch (error) {
       setError(true);
@@ -61,7 +74,11 @@ function Venue() {
   }, [setVenue]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TailSpin color="rgb(74 222 128)" />
+      </div>
+    );
   }
   if (error) {
     return <div>Error</div>;
@@ -86,14 +103,14 @@ function Venue() {
             </span>
             <span className="flex mb-10 gap-3">
               <p className="text-xl text-center">{venue.price}kr/night</p>|
-              <p className="text-base">Max Capacity: 10</p>
+              <p className="text-base">Max Capacity: {maxGuests}</p>
             </span>
             <form
               className="my-5 justify-center  mt-5"
               onSubmit={handleSubmit(onBook)}
             >
               <span className="flex mb-6 gap-2 sm:flex-row justify-center items-center">
-                <div className="rounded-xl py-2 px-4 drop-shadow-xl bg-white">
+                <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
                   <label htmlFor="dateFrom" className="mr-2">
                     from:
                   </label>
@@ -104,7 +121,7 @@ function Venue() {
                   />
                 </div>
                 <p className="align-middle">-</p>
-                <div className="rounded-xl py-2 px-4 drop-shadow-xl bg-white">
+                <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
                   <label htmlFor="dateTo" className="mr-2">
                     to:
                   </label>
@@ -116,7 +133,7 @@ function Venue() {
                 </div>
               </span>
               <span className="flex justify-center mb-2 gap-5">
-                <div className="rounded-xl py-2 px-4 drop-shadow-xl bg-white">
+                <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
                   <label htmlFor="guests" className="mr-2">
                     guests:
                   </label>
@@ -126,13 +143,21 @@ function Venue() {
                     className="w-10 focus:outline-none"
                   />
                 </div>
-                <button className="rounded-xl py-2 px-6 drop-shadow-xl bg-teal-500 text-white">
+                <button className="rounded-xl py-2 px-6 drop-shadow-2xl bg-teal-500 text-white">
                   Book Now
                 </button>
               </span>
               <p>{errors.guests?.message}</p>
               <p>{errors.dateFrom?.message}</p>
               <p>{errors.dateTo?.message}</p>
+              {bookingError ? (
+                <p className="text-red-500 text-center mt-5">{bookingError}</p>
+              ) : null}
+              {bookingSuccess ? (
+                <p className="text-green-500 text-center mt-5">
+                  {bookingSuccess}
+                </p>
+              ) : null}
             </form>
           </div>
           <div>
