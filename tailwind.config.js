@@ -2,6 +2,9 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    dropShadow: {
+      "2xl": "0 4px 20px rgba(0, 0, 0, .1)",
+    },
     extend: {
       dropShadow: {
         "3xl": "0 4px 20px hsla(110, 100%, 20%, 0.15)",
