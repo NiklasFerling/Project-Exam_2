@@ -6,8 +6,8 @@ import { load } from "../../storage/load";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { fetchProfile } from "../../api/profile/read";
 import { updateProfile } from "../../api/profile/update";
+import { fetchBookings } from "../../api/bookings/read";
 
 const schema = yup.object().shape({
   avatar: yup.string().required("Avatar is required"),
@@ -19,6 +19,7 @@ function Profile() {
   const [displayVenues, setDisplayVenues] = useState(false);
   const [profile, setProfile] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [bookings, setBookings] = useState([]);
   const { setIsLoggedIn } = useContext(AuthContext);
   const {
     register,
@@ -43,35 +44,41 @@ function Profile() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchProfile() {
-      try {
-        setLoading(true);
-        const profile = load("profile");
-        const apiKey = load("API_KEY");
+  async function fetchProfile() {
+    try {
+      setLoading(true);
+      const profile = load("profile");
+      const apiKey = load("API_KEY");
 
-        const response = await fetch(
-          "https://v2.api.noroff.dev/holidaze/profiles/" + profile.name,
-          {
-            headers: {
-              Authorization: `Bearer ${profile.accessToken}`,
-              "X-Noroff-API-Key": apiKey,
-            },
-          }
-        );
-        const data = await response.json();
-        setProfile(data.data);
-        setLoading(false);
-        return data;
-      } catch (err) {
-        setError(true);
-        setLoading(false);
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+      const response = await fetch(
+        "https://v2.api.noroff.dev/holidaze/profiles/" + profile.name,
+        {
+          headers: {
+            Authorization: `Bearer ${profile.accessToken}`,
+            "X-Noroff-API-Key": apiKey,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+
+      setProfile(data.data);
+      setLoading(false);
+      return data;
+    } catch (err) {
+      setError(true);
+      setLoading(false);
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     fetchProfile();
+    fetchBookings().then((data) => {
+      setBookings(data.data);
+    });
   }, []);
 
   if (loading) {
@@ -170,7 +177,13 @@ function Profile() {
           </button>
         </div>
       </div>
-      {displayBookings ? <h3>Your Bookings</h3> : null}
+      {displayBookings ? (
+        <div>
+          {bookings.map((booking) => (
+            <p key={booking.id}>{booking.venue.name}</p>
+          ))}
+        </div>
+      ) : null}
       {displayVenues ? <h3>Your Venues</h3> : null}
     </div>
   );
