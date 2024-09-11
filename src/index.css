@@ -20,6 +20,10 @@
   color: black !important;
 }
 
+abbr:where([title]) {
+  text-decoration: none;
+}
+
 .custom-tile {
   background-color: rgb(197, 34, 34) !important;
   color: white !important;
