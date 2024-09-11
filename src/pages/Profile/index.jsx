@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { updateProfile } from "../../api/profile/update";
 import { fetchBookings } from "../../api/bookings/read";
 import { TailSpin } from "react-loader-spinner";
+import BookingCard from "../../components/bookingCard";
 
 const schema = yup.object().shape({
   avatar: yup.string().required("Avatar is required"),
@@ -40,29 +41,6 @@ function Profile() {
         setSuccess(true);
       }
     });
-  }
-
-  async function onDelete(id) {
-    const apiKey = load("API_KEY");
-    const token = load("accessToken");
-
-    try {
-      const response = await fetch(
-        "https://v2.api.noroff.dev/holidaze/bookings/" + id,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            "X-Noroff-API-Key": apiKey,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   const [error, setError] = useState(false);
@@ -138,7 +116,7 @@ function Profile() {
               <input
                 {...register("avatar")}
                 defaultValue={profile.avatar.url || ""}
-                className="p-2 rounded-xl w-96 mb-3"
+                className="p-2 rounded-xl w-96 mb-3 focus:outline-none"
               />
               <p>{errors.avatar?.message}</p>
               <label
@@ -183,56 +161,44 @@ function Profile() {
               setDisplayBookings(!displayBookings);
               setDisplayVenues(false);
             }}
-            className="p-4 bg-gradient-to-bl from-green-200/50 via-teal-50 to-green-200/50 border border-white rounded-lg"
+            className="p-4 bg-green-100 border border-green-400 rounded-lg"
           >
             <i className="fa-solid fa-bed"></i>
             <p>Your Bookings</p>
           </button>
-          <button
-            onClick={() => {
-              setDisplayVenues(!displayVenues);
-              setDisplayBookings(false);
-            }}
-            className="p-4 bg-gradient-to-bl from-green-200/50 via-teal-50 to-green-200/50 border border-white rounded-lg"
-          >
-            <i className="fa-solid fa-building"></i>
-            <p>Your Venues</p>
-          </button>
+          {profile.venueManager && (
+            <button
+              onClick={() => {
+                setDisplayVenues(!displayVenues);
+                setDisplayBookings(false);
+              }}
+              className="p-4 bg-green-100 border border-green-400 rounded-lg"
+            >
+              <i className="fa-solid fa-building"></i>
+              <p>Your Venues</p>
+            </button>
+          )}
           <button
             onClick={onLogout}
-            className="p-4 bg-gradient-to-bl from-red-200/50 via-red-50 to-red-200/50 border border-white rounded-lg"
+            className="p-4 bg-red-100 border border-red-400 rounded-lg"
           >
             <i className="fa-solid fa-sign-out"></i>
             <p>Logout</p>
           </button>
         </div>
       </div>
-      {displayBookings ? (
-        <div>
+      {displayBookings && bookings.length > 0 ? (
+        <div className="flex flex-col gap-5 justify-center items-center mt-10">
           {bookings.map((booking) => (
-            <div className="flex gap-5 mb-10" key={booking.id}>
-              <img
-                src={booking.venue.media[0].url}
-                alt={booking.venue.media[0].alt}
-                className="h-40 w-60 object-cover"
-              />
-              <div>
-                <p className="text-xl mb-3">{booking.venue.name}</p>
-                <p>{booking.dateFrom}</p>
-                <p className="mb-3">{booking.dateTo}</p>
-                <p>Guests: {booking.guests}</p>
-              </div>
-              <div>
-                <button
-                  onClick={() => onDelete(booking.id)}
-                  className="fa-regular fa-x"
-                ></button>
-              </div>
-            </div>
+            <BookingCard booking={booking} key={booking.id} />
           ))}
         </div>
-      ) : null}
-      {displayVenues ? <h3>Your Venues</h3> : null}
+      ) : displayBookings && bookings.length === 0 ? (
+        <h3>No Bookings</h3>
+      ) : (
+        !displayBookings && null
+      )}
+      {displayVenues && <h3>Your Venues</h3>}
     </div>
   );
 }
