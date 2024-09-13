@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { isSameDay, set } from "date-fns";
+import { isSameDay } from "date-fns";
 import { load } from "../../storage/load";
 
 const datesToAddClassTo = ["2024-09-07", "2024-09-14", "2024-09-21"];

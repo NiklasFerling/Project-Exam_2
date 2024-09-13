@@ -11,6 +11,12 @@ function Register() {
         <h2 className="text-xl my-4 text-center">New Account</h2>
         <RegisterForm />
       </div>
+      <p className="text-neutral-600 mt-3 text-center">
+        Already have an account?
+        <Link to={"/login"} className="text-blue-500 ml-3">
+          Log in here
+        </Link>
+      </p>
     </div>
   );
 }
