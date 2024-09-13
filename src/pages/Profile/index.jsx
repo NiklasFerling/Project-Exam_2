@@ -10,6 +10,7 @@ import { updateProfile } from "../../api/profile/update";
 import { fetchBookings } from "../../api/bookings/read";
 import { TailSpin } from "react-loader-spinner";
 import BookingCard from "../../components/bookingCard";
+import CreateVenueForm from "../../components/CreateVenueForm";
 
 const schema = yup.object().shape({
   avatar: yup.string().required("Avatar is required"),
@@ -188,7 +189,8 @@ function Profile() {
         </div>
       </div>
       {displayBookings && bookings.length > 0 ? (
-        <div className="flex flex-col gap-5 justify-center items-center mt-10">
+        <div className="flex flex-col gap-5 justify-center items-center">
+          <h3 className="text-center text-xl mt-16 mb-8">Your Bookings</h3>
           {bookings.map((booking) => (
             <BookingCard booking={booking} key={booking.id} />
           ))}
@@ -198,7 +200,12 @@ function Profile() {
       ) : (
         !displayBookings && null
       )}
-      {displayVenues && <h3>Your Venues</h3>}
+      {displayVenues && (
+        <div>
+          <h3 className="text-center text-xl mt-16 mb-8">Your Venues</h3>
+          <CreateVenueForm />
+        </div>
+      )}
     </div>
   );
 }
