@@ -4,7 +4,6 @@ function VenueCard({ venue }) {
   function truncateText(text, maxLength = 25) {
     return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
   }
-  console.log(venue.media);
 
   return (
     <Link

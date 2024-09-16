@@ -55,7 +55,6 @@ function Venue() {
         `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
       );
       const data = await response.json();
-      console.log(data.data);
 
       setVenue(data.data);
       setMaxGuests(data.data.maxGuests);

@@ -3,14 +3,16 @@ import { VenuesContext } from "../../contexts/venuesContext";
 import VenueCard from "../VenueCard";
 import { TailSpin } from "react-loader-spinner";
 
-function Venues() {
+function Venues({ url }) {
   const { venues, setVenues } = useContext(VenuesContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  console.log(url);
+
   async function fetchVenues() {
     try {
-      const response = await fetch("https://v2.api.noroff.dev/holidaze/venues");
+      const response = await fetch(url);
       const data = await response.json();
       setLoading(false);
       return data;
@@ -22,8 +24,6 @@ function Venues() {
 
   useEffect(() => {
     fetchVenues().then((data) => {
-      console.log(data);
-
       const filteredVenues = data.data.filter(
         (venue) => venue.media.length > 0
       );
