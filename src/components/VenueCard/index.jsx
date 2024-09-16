@@ -4,6 +4,7 @@ function VenueCard({ venue }) {
   function truncateText(text, maxLength = 25) {
     return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
   }
+  console.log(venue.media);
 
   return (
     <Link
@@ -11,8 +12,8 @@ function VenueCard({ venue }) {
       className="flex-col w-40 md:w-72 overflow-hidden border rounded-xl mb-10 font-semibold bg-white drop-shadow-2xl hover:scale-105 transition-transform"
     >
       <img
-        src={venue.media[0].url}
-        alt={venue.media[0].alt}
+        src={venue.media[0].url ? venue.media[0].url : ""}
+        alt={venue.media[0].alt ? venue.media[0].alt : ""}
         className="w-full h-56 md:h-96 object-cover"
       />
       <div className="p-3 flex-col bg-white">

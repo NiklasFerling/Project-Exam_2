@@ -8,22 +8,27 @@ function Venues() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchVenues() {
-      try {
-        const response = await fetch(
-          "https://v2.api.noroff.dev/holidaze/venues"
-        );
-        const data = await response.json();
-
-        setVenues(data);
-        setLoading(false);
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
+  async function fetchVenues() {
+    try {
+      const response = await fetch("https://v2.api.noroff.dev/holidaze/venues");
+      const data = await response.json();
+      setLoading(false);
+      return data;
+    } catch (error) {
+      setError(true);
+      setLoading(false);
     }
-    fetchVenues();
+  }
+
+  useEffect(() => {
+    fetchVenues().then((data) => {
+      console.log(data);
+
+      const filteredVenues = data.data.filter(
+        (venue) => venue.media.length > 0
+      );
+      setVenues(filteredVenues);
+    });
   }, [setVenues]);
 
   if (loading) {
@@ -36,13 +41,13 @@ function Venues() {
   if (error) {
     return <div>Something went wrong</div>;
   }
-  if (venues.data.length === 0) {
+  if (venues.length === 0) {
     return <p className="text-white text-center">No posts found</p>;
   }
 
   return (
     <div className="flex flex-wrap justify-center gap-4 max-w-7xl mx-auto">
-      {venues.data.map((venue) => (
+      {venues.map((venue) => (
         <VenueCard key={venue.id} venue={venue} />
       ))}
     </div>
