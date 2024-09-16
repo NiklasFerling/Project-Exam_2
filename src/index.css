@@ -7,6 +7,12 @@
   border-radius: 16px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .react-calendar__tile {
   position: relative;
 }
