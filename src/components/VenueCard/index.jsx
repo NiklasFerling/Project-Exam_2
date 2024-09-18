@@ -13,7 +13,7 @@ function VenueCard({ venue }) {
       <img
         src={venue.media[0].url ? venue.media[0].url : ""}
         alt={venue.media[0].alt ? venue.media[0].alt : ""}
-        className="w-full h-56 md:h-96 object-cover"
+        className="w-full h-56 md:h-96 object-cover bg-green-100"
       />
       <div className="p-3 flex-col bg-white">
         <span className="flex justify-between">

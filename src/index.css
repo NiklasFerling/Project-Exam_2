@@ -22,8 +22,9 @@ input::-webkit-inner-spin-button {
 }
 
 .react-calendar__tile--now {
-  background-color: rgb(187 247 208);
-  color: black !important;
+  font-weight: bold;
+  font-size: 16px;
+  text-decoration: underline;
 }
 
 abbr:where([title]) {

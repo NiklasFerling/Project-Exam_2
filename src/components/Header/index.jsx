@@ -25,7 +25,7 @@ function Header() {
         {isLoggedIn ? (
           <Link to="profile">
             <div className="flex items-center gap-2">
-              <i className="fa-regular fa-user"></i>
+              <i className="fa-solid fa-user"></i>
               <p className="ml-2">{profile.name}</p>
             </div>
           </Link>
