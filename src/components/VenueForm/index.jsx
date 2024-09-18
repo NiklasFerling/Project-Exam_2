@@ -19,43 +19,44 @@ const schema = yup.object().shape({
   country: yup.string().required("Country is required"),
 });
 
-function onCreateVenue(body) {
-  const object = {
-    name: body.name,
-    description: body.description,
-    media: [
-      {
-        url: body.url,
-        alt: body.alt,
-      },
-    ],
-    price: body.price,
-    maxGuests: body.maxGuests,
-    rating: body.rating,
-    location: {
-      address: body.address,
-      city: body.city,
-      zip: body.zip,
-      country: body.country,
-    },
-  };
-  createVenue(object).then((data) => {
-    console.log(data);
-  });
-}
-
-function CreateVenueForm() {
+function VenueForm(props) {
   const [starRating, setStarRating] = useState(0);
+  const [method, setMethod] = useState(props.method);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
+  function onSubmit(body) {
+    const object = {
+      name: body.name,
+      description: body.description,
+      media: [
+        {
+          url: body.url,
+          alt: body.alt,
+        },
+      ],
+      price: body.price,
+      maxGuests: body.maxGuests,
+      rating: body.rating,
+      location: {
+        address: body.address,
+        city: body.city,
+        zip: body.zip,
+        country: body.country,
+      },
+    };
+    createVenue(object, method).then((data) => {
+      console.log(data);
+    });
+  }
+
   return (
     <form
-      onSubmit={handleSubmit(onCreateVenue)}
-      className="flex flex-col gap-5 md:w-1/2 mx-auto mb-10"
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-5 md:w-2/3 lg:w-1/2 mx-auto mb-10"
     >
       <div className="flex gap-3">
         <div className="flex flex-col flex-1 gap-5">
@@ -70,8 +71,8 @@ function CreateVenueForm() {
               {...register("name")}
               className="w-full focus:outline-none"
             />
-            <p>{errors.name?.message}</p>
           </div>
+          <p>{errors.name?.message}</p>
           <div className="border rounded-md p-2 relative">
             <label
               htmlFor="url"
@@ -80,8 +81,8 @@ function CreateVenueForm() {
               Image URL
             </label>
             <input {...register("url")} className="w-full focus:outline-none" />
-            <p>{errors.url?.message}</p>
           </div>
+          <p>{errors.url?.message}</p>
           <div className="border rounded-md p-2 relative">
             <label
               htmlFor="alt"
@@ -90,8 +91,8 @@ function CreateVenueForm() {
               Image Description
             </label>
             <input {...register("alt")} className="w-full focus:outline-none" />
-            <p>{errors.alt?.message}</p>
           </div>
+          <p>{errors.alt?.message}</p>
           <span className="flex gap-3">
             <div className="border rounded-md p-2 relative flex-1">
               <label
@@ -105,8 +106,8 @@ function CreateVenueForm() {
                 type="number"
                 className="w-full focus:outline-none"
               />
-              <p>{errors.price?.message}</p>
             </div>
+            <p>{errors.price?.message}</p>
             <div className="border rounded-md p-2 relative flex-1">
               <label
                 htmlFor="maxGuests"
@@ -119,14 +120,11 @@ function CreateVenueForm() {
                 type="number"
                 className="w-full focus:outline-none"
               />
-              <p>{errors.maxGuests?.message}</p>
             </div>
+            <p>{errors.maxGuests?.message}</p>
           </span>
-          <div className="border rounded-md p-2 relative">
-            <label
-              htmlFor="rating"
-              className="absolute -top-3 left-4 text-sm bg-white px-2"
-            >
+          <div className="flex flex-col items-center gap-2">
+            <label htmlFor="rating" className="text-sm bg-white px-2">
               Venue rating
             </label>
             <Rating
@@ -139,13 +137,8 @@ function CreateVenueForm() {
               }}
               precision={1}
             />
-            <p>{errors.rating?.message}</p>
-            {/* <input
-              {...register("rating")}
-              type="number"
-              className="w-full focus:outline-none"
-            /> */}
           </div>
+          <p>{errors.rating?.message}</p>
         </div>
         <div className="border rounded-md p-2 relative flex-1">
           <label
@@ -158,8 +151,8 @@ function CreateVenueForm() {
             {...register("description")}
             className="w-full h-full focus:outline-none"
           />
-          <p>{errors.description?.message}</p>
         </div>
+        <p>{errors.description?.message}</p>
       </div>
       <span className="flex gap-3">
         <div className="border rounded-md p-2 relative flex-1">
@@ -170,8 +163,8 @@ function CreateVenueForm() {
             City
           </label>
           <input {...register("city")} className="w-full focus:outline-none" />
-          <p>{errors.city?.message}</p>
         </div>
+        <p>{errors.city?.message}</p>
         <div className="border rounded-md p-2 relative flex-2">
           <label
             htmlFor="zip"
@@ -184,8 +177,8 @@ function CreateVenueForm() {
             className="w-full focus:outline-none"
             type="number"
           />
-          <p>{errors.zip?.message}</p>
         </div>
+        <p>{errors.zip?.message}</p>
       </span>
       <span className="flex gap-3">
         <div className="border rounded-md p-2 relative mb-3 flex-1">
@@ -199,8 +192,8 @@ function CreateVenueForm() {
             {...register("address")}
             className="w-full focus:outline-none"
           />
-          <p>{errors.address?.message}</p>
         </div>
+        <p>{errors.address?.message}</p>
         <div className="border rounded-md p-2 relative mb-3 flex-1">
           <label
             htmlFor="country"
@@ -212,11 +205,11 @@ function CreateVenueForm() {
             {...register("country")}
             className="w-full focus:outline-none"
           />
-          <p>{errors.country?.message}</p>
         </div>
+        <p>{errors.country?.message}</p>
       </span>
-      <button type="submit">Create Venue</button>
+      <button type="submit">Submit</button>
     </form>
   );
 }
-export default CreateVenueForm;
+export default VenueForm;

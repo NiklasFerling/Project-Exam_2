@@ -27,7 +27,10 @@ function SearchForm() {
         );
         const json = await response.json();
         if (json.data) {
-          setVenues(json);
+          const filteredVenues = json.data.filter(
+            (venue) => venue.media.length > 0
+          );
+          setVenues(filteredVenues);
         }
       } catch (error) {
         console.error(error);
@@ -40,7 +43,10 @@ function SearchForm() {
         );
         const json = await response.json();
         if (json.data) {
-          setVenues(json);
+          const filteredVenues = json.data.filter(
+            (venue) => venue.media.length > 0
+          );
+          setVenues(filteredVenues);
         }
       } catch (error) {
         console.error(error);
