@@ -5,8 +5,10 @@ import * as yup from "yup";
 import MyCalendar from "../../components/ReactCalendar";
 import { createBooking } from "../../api/bookings/create";
 import { TailSpin } from "react-loader-spinner";
-import { set } from "date-fns";
+import { load } from "../../storage/load";
+import VenueForm from "../../components/VenueForm";
 
+const profile = load("profile");
 const id = window.location.search.replace("?", "");
 
 function Venue() {
@@ -16,6 +18,7 @@ function Venue() {
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [bookingError, setBookingError] = useState(false);
   const [maxGuests, setMaxGuests] = useState(1);
+  const [isManager, setIsManager] = useState(false);
 
   const schema = yup.object().shape({
     guests: yup
@@ -55,7 +58,9 @@ function Venue() {
         `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
       );
       const data = await response.json();
-
+      if (data.data.owner.name === profile.name) {
+        setIsManager(true);
+      }
       setVenue(data.data);
       setMaxGuests(data.data.maxGuests);
       setLoading(false);
@@ -104,72 +109,75 @@ function Venue() {
               <p className="text-xl text-center">{venue.price}kr/night</p>|
               <p className="text-base">Max Capacity: {maxGuests}</p>
             </span>
-            <form
-              className="my-5 justify-center  mt-5"
-              onSubmit={handleSubmit(onBook)}
-            >
-              <span className="flex mb-6 gap-2 sm:flex-row justify-center items-center">
-                <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
-                  <label htmlFor="dateFrom" className="mr-2">
-                    from:
-                  </label>
-                  <input
-                    {...register("dateFrom")}
-                    type="date"
-                    className="focus:outline-none"
-                  />
-                </div>
-                <p className="align-middle">-</p>
-                <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
-                  <label htmlFor="dateTo" className="mr-2">
-                    to:
-                  </label>
-                  <input
-                    {...register("dateTo")}
-                    type="date"
-                    className="focus:outline-none"
-                  />
-                </div>
-              </span>
-              <span className="flex justify-center mb-2 gap-5">
-                <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
-                  <label htmlFor="guests" className="mr-2">
-                    guests:
-                  </label>
-                  <input
-                    type="number"
-                    {...register("guests")}
-                    className="w-10 focus:outline-none"
-                  />
-                </div>
-                <button className="rounded-xl py-2 px-6 drop-shadow-2xl bg-teal-500 text-white">
-                  Book Now
-                </button>
-              </span>
-              <p>{errors.guests?.message}</p>
-              <p>{errors.dateFrom?.message}</p>
-              <p>{errors.dateTo?.message}</p>
-              {bookingError ? (
-                <p className="text-red-500 text-center mt-5">{bookingError}</p>
-              ) : null}
-              {bookingSuccess ? (
-                <p className="text-green-500 text-center mt-5">
-                  {bookingSuccess}
-                </p>
-              ) : null}
-            </form>
+            {!isManager && (
+              <form
+                className="my-5 justify-center  mt-5"
+                onSubmit={handleSubmit(onBook)}
+              >
+                <span className="flex mb-6 gap-2 sm:flex-row justify-center items-center">
+                  <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
+                    <label htmlFor="dateFrom" className="mr-2">
+                      from:
+                    </label>
+                    <input
+                      {...register("dateFrom")}
+                      type="date"
+                      className="focus:outline-none"
+                    />
+                  </div>
+                  <p className="align-middle">-</p>
+                  <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
+                    <label htmlFor="dateTo" className="mr-2">
+                      to:
+                    </label>
+                    <input
+                      {...register("dateTo")}
+                      type="date"
+                      className="focus:outline-none"
+                    />
+                  </div>
+                </span>
+                <span className="flex justify-center mb-2 gap-5">
+                  <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
+                    <label htmlFor="guests" className="mr-2">
+                      guests:
+                    </label>
+                    <input
+                      type="number"
+                      {...register("guests")}
+                      className="w-10 focus:outline-none"
+                    />
+                  </div>
+                  <button className="rounded-xl py-2 px-6 drop-shadow-2xl bg-teal-500 text-white">
+                    Book Now
+                  </button>
+                </span>
+                <p>{errors.guests?.message}</p>
+                <p>{errors.dateFrom?.message}</p>
+                <p>{errors.dateTo?.message}</p>
+                {bookingError ? (
+                  <p className="text-red-500 text-center mt-5">
+                    {bookingError}
+                  </p>
+                ) : null}
+                {bookingSuccess ? (
+                  <p className="text-green-500 text-center mt-5">
+                    {bookingSuccess}
+                  </p>
+                ) : null}
+              </form>
+            )}
           </div>
           <div>
             <span className="flex gap-2 items-center justify-center mb-2">
               <div className="w-4 h-4 rounded-md bg-red-400"></div>
               <p>Not Available</p>
-              <div className="w-4 h-4 rounded-md bg-green-300 ml-3"></div>
-              <p>Today</p>
             </span>
             <MyCalendar id={venue.id} />
           </div>
         </div>
       </div>
+      {isManager && <VenueForm method="PUT" />}
     </div>
   );
 }
