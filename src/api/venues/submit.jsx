@@ -23,5 +23,6 @@ export async function submitVenue(data, method, id) {
     return data;
   } catch (error) {
     console.error("Error creating venue:", error);
+    return error;
   }
 }

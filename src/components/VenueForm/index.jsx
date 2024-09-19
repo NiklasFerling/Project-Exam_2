@@ -12,7 +12,7 @@ const schema = yup.object().shape({
   alt: yup.string().required("Image description is required"),
   price: yup.number().required("Price is required"),
   maxGuests: yup.number().required("Capacity is required"),
-  rating: yup.number().required("Rating is required"),
+  rating: yup.number(),
   address: yup.string().required("Address is required"),
   city: yup.string().required("City is required"),
   zip: yup.string().required("Zip is required"),
@@ -25,6 +25,8 @@ const schema = yup.object().shape({
 
 function VenueForm(props) {
   const [starRating, setStarRating] = useState(0);
+  const [apiError, setApiError] = useState("");
+  const [apiSuccess, setApiSuccess] = useState(false);
   const {
     register,
     handleSubmit,
@@ -35,7 +37,7 @@ function VenueForm(props) {
     if (props.venue) {
       setStarRating(props.venue.rating);
     }
-  }, [props.venue]);
+  }, []);
 
   function onSubmit(body) {
     const object = {
@@ -49,7 +51,7 @@ function VenueForm(props) {
       ],
       price: body.price,
       maxGuests: body.maxGuests,
-      rating: body.rating,
+      rating: starRating,
       meta: {
         wifi: body.wifi,
         parking: body.parking,
@@ -65,6 +67,13 @@ function VenueForm(props) {
     };
     submitVenue(object, props.method, props.venue?.id).then((data) => {
       console.log(data);
+      if (data.data) {
+        setApiSuccess(true);
+        setApiError(false);
+      } else if (data.errors) {
+        setApiError(data.errors[0].message);
+        setApiSuccess(false);
+      }
     });
   }
 
@@ -73,7 +82,7 @@ function VenueForm(props) {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-5 md:w-2/3 lg:w-1/2 mx-auto mb-10"
     >
-      <div className="flex gap-3">
+      <div className="flex flex-col md:flex-row gap-3">
         <div className="flex flex-col flex-1 gap-5">
           <div className="border rounded-md p-2 relative">
             <label
@@ -166,10 +175,10 @@ function VenueForm(props) {
             <Rating
               name="rating"
               value={starRating}
+              defaultValue={starRating}
               onChange={(event, newValue) => {
                 setStarRating(newValue);
-                console.log(newValue);
-                register("rating", { value: newValue });
+                register("rating", { value: starRating });
               }}
               precision={1}
             />
@@ -189,6 +198,7 @@ function VenueForm(props) {
             {...register("description")}
             className="w-full h-full focus:outline-none"
             defaultValue={props.venue?.description}
+            rows={5}
           />
           <p className="absolute top-1 right-3 text-red-600 text-3xl">
             {errors.description && "*"}
@@ -264,7 +274,7 @@ function VenueForm(props) {
           </p>
         </div>
       </span>
-      <div className="flex flex-wrap gap-5 max-w-96 mx-auto justify-center">
+      <div className="flex flex-wrap gap-5 max-w-96 xl:max-w-full mx-auto justify-center">
         <label
           htmlFor="wifi"
           className="flex flex-col items-center gap-1 bg-green-200/50 p-2 rounded-lg w-32 h-32 justify-center"
@@ -320,10 +330,12 @@ function VenueForm(props) {
       </div>
       <button
         type="submit"
-        className="bg-teal-500 text-white px-6 py-2 rounded-lg w-fit m-auto"
+        className="bg-teal-500 text-white px-6 py-2 rounded-lg w-fit mx-auto mt-10"
       >
         Submit
       </button>
+      <p className="text-green-500 text-center">{apiSuccess && "Success!"}</p>
+      {apiError && <p className="text-red-500">{apiError}</p>}
     </form>
   );
 }

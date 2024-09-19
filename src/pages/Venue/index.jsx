@@ -138,7 +138,7 @@ function Venue() {
                 onSubmit={handleSubmit(onBook)}
               >
                 <span className="flex mb-6 gap-2 sm:flex-row justify-center items-center">
-                  <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
+                  <div className="flex flex-col rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
                     <label htmlFor="dateFrom" className="mr-2">
                       from:
                     </label>
@@ -149,7 +149,7 @@ function Venue() {
                     />
                   </div>
                   <p className="align-middle">-</p>
-                  <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
+                  <div className="flex flex-col rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
                     <label htmlFor="dateTo" className="mr-2">
                       to:
                     </label>
@@ -161,17 +161,17 @@ function Venue() {
                   </div>
                 </span>
                 <span className="flex justify-center mb-2 gap-5">
-                  <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white">
+                  <div className="rounded-xl py-2 px-4 drop-shadow-2xl bg-white w-32">
                     <label htmlFor="guests" className="mr-2">
                       guests:
                     </label>
                     <input
                       type="number"
                       {...register("guests")}
-                      className="w-10 focus:outline-none"
+                      className="focus:outline-none w-8"
                     />
                   </div>
-                  <button className="rounded-xl py-2 px-6 drop-shadow-2xl bg-teal-500 text-white">
+                  <button className="rounded-xl py-2 px-6 drop-shadow-2xl bg-teal-500 text-white w-32">
                     Book Now
                   </button>
                 </span>
