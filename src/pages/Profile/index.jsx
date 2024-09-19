@@ -9,7 +9,7 @@ import * as yup from "yup";
 import { updateProfile } from "../../api/profile/update";
 import { fetchBookings } from "../../api/bookings/read";
 import { TailSpin } from "react-loader-spinner";
-import BookingCard from "../../components/bookingCard";
+import BookingCard from "../../components/BookingCard";
 import VenueForm from "../../components/VenueForm";
 import Venues from "../../components/Venues";
 import YourVenues from "../../components/YourVenues";
