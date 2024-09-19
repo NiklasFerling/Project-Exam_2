@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -17,16 +17,25 @@ const schema = yup.object().shape({
   city: yup.string().required("City is required"),
   zip: yup.string().required("Zip is required"),
   country: yup.string().required("Country is required"),
+  wifi: yup.boolean().required("Wifi is required"),
+  parking: yup.boolean().required("Parking is required"),
+  breakfast: yup.boolean().required("Breakfast is required"),
+  pets: yup.boolean().required("Pets is required"),
 });
 
 function VenueForm(props) {
   const [starRating, setStarRating] = useState(0);
-  const [method, setMethod] = useState(props.method);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+
+  useEffect(() => {
+    if (props.venue) {
+      setStarRating(props.venue.rating);
+    }
+  }, [props.venue]);
 
   function onSubmit(body) {
     const object = {
@@ -41,6 +50,12 @@ function VenueForm(props) {
       price: body.price,
       maxGuests: body.maxGuests,
       rating: body.rating,
+      meta: {
+        wifi: body.wifi,
+        parking: body.parking,
+        breakfast: body.breakfast,
+        pets: body.pets,
+      },
       location: {
         address: body.address,
         city: body.city,
@@ -227,7 +242,66 @@ function VenueForm(props) {
         </div>
         <p>{errors.country?.message}</p>
       </span>
-      <button type="submit">Submit</button>
+      <div className="flex flex-wrap gap-5 max-w-96 mx-auto justify-center">
+        <label
+          htmlFor="wifi"
+          className="flex flex-col items-center gap-1 bg-green-200/50 p-2 rounded-lg w-32 h-32 justify-center"
+        >
+          <i className="fa-solid fa-wifi text-3xl"></i>
+          <p className="text-sm mb-3">Wifi</p>
+          <input
+            {...register("wifi")}
+            type="checkbox"
+            id="wifi"
+            defaultChecked={props.venue?.meta.wifi}
+          />
+        </label>
+        <label
+          htmlFor="parking"
+          className="flex flex-col items-center gap-1 bg-green-200/50 p-2 rounded-lg w-32 h-32 justify-center"
+        >
+          <i className="fa-solid fa-car text-3xl"></i>
+          <p className="text-sm mb-3">Parking</p>
+          <input
+            {...register("parking")}
+            type="checkbox"
+            id="parking"
+            defaultChecked={props.venue?.meta.parking}
+          />
+        </label>
+        <label
+          htmlFor="breakfast"
+          className="flex flex-col items-center gap-1 bg-green-200/50 p-2 rounded-lg w-32 h-32 justify-center"
+        >
+          <i className="fa-solid fa-coffee text-3xl"></i>
+          <p className="text-sm mb-3">Breakfast</p>
+          <input
+            {...register("breakfast")}
+            type="checkbox"
+            id="breakfast"
+            defaultChecked={props.venue?.meta.breakfast}
+          />
+        </label>
+        <label
+          htmlFor="pets"
+          className="flex flex-col items-center gap-1 bg-green-200/50 p-2 rounded-lg w-32 h-32 justify-center"
+        >
+          <i className="fa-solid fa-dog text-3xl"></i>
+          <p className="text-sm mb-3">Pets</p>
+          <input
+            {...register("pets")}
+            type="checkbox"
+            id="pets"
+            defaultChecked={props.venue?.meta.pets}
+          />
+        </label>
+      </div>
+      <button
+        type="submit"
+        className="bg-teal-500 text-white px-6 py-2 rounded-lg w-fit m-auto"
+      >
+        Submit
+      </button>
     </form>
   );
 }

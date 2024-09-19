@@ -7,6 +7,7 @@ import { createBooking } from "../../api/bookings/create";
 import { TailSpin } from "react-loader-spinner";
 import { load } from "../../storage/load";
 import VenueForm from "../../components/VenueForm";
+import ManagerBookingCard from "../../components/ManagerBookingCard";
 
 const profile = load("profile");
 const id = window.location.search.replace("?", "");
@@ -19,6 +20,7 @@ function Venue() {
   const [bookingError, setBookingError] = useState(false);
   const [maxGuests, setMaxGuests] = useState(1);
   const [isManager, setIsManager] = useState(false);
+  const [bookings, setBookings] = useState([]);
 
   const schema = yup.object().shape({
     guests: yup
@@ -58,10 +60,12 @@ function Venue() {
         `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
       );
       const data = await response.json();
+      console.log(data.data.bookings[0]);
       if (data.data.owner.name === profile.name) {
         setIsManager(true);
       }
       setVenue(data.data);
+      setBookings(data.data.bookings);
       setMaxGuests(data.data.maxGuests);
       setLoading(false);
     } catch (error) {
@@ -89,7 +93,8 @@ function Venue() {
   }
   return (
     <div className="min-h-screen mb-20">
-      <div className="flex flex-col lg:flex-row justify-center gap-5 mt-10 mx-auto md:w-2/3 xl:max-w-2/3 xl:px-0">
+      <div className="flex flex-col justify-center gap-2 mt-10 mx-auto max-w-2xl">
+        <h1 className="text-3xl mb-8 text-center">{venue.name}</h1>
         <img
           src={venue.media[0].url}
           alt={venue.media[0].alt}
@@ -97,18 +102,36 @@ function Venue() {
         />
         <div className="p-5 mx-10 md:mx-0 flex flex-col gap-5 justify-center">
           <div>
-            <h1 className="text-3xl mb-4">{venue.name}</h1>
-            <span className="flex mb-5 items-center">
-              <i className="fa-solid fa-star mr-1"></i>
-              <p className="mr-4">{venue.rating}</p>
-              <p>
-                {venue.location.city}, {venue.location.country}
-              </p>
-            </span>
-            <span className="flex mb-10 gap-3">
-              <p className="text-xl text-center">{venue.price}kr/night</p>|
-              <p className="text-base">Max Capacity: {maxGuests}</p>
-            </span>
+            {!isManager && (
+              <div className="flex flex-col md:flex-row justify-between items-center mb-10">
+                <div className="flex flex-col mb-10 md:mb-0">
+                  <span className="flex mb-5 items-center">
+                    <i className="fa-solid fa-star mr-1"></i>
+                    <p className="mr-4">{venue.rating}</p>
+                    <p>
+                      {venue.location.city}, {venue.location.country}
+                    </p>
+                  </span>
+                  <span className="flex gap-3 text-neutral-500 items-center justify-center">
+                    {venue.meta.wifi && (
+                      <i className="fa-solid fa-wifi text-lg"></i>
+                    )}
+                    {venue.meta.parking && (
+                      <i className="fa-solid fa-car text-lg"></i>
+                    )}
+                    {venue.meta.breakfast && (
+                      <i className="fa-solid fa-coffee text-lg"></i>
+                    )}
+                    {venue.meta.pets && (
+                      <i className="fa-solid fa-dog text-lg"></i>
+                    )}
+                    <p>|</p>
+                    <p>Max Capacity: {maxGuests}</p>
+                  </span>
+                </div>
+                <p className="text-2xl">{venue.price}kr/night</p>
+              </div>
+            )}
             {!isManager && (
               <form
                 className="my-5 justify-center  mt-5"
@@ -168,6 +191,24 @@ function Venue() {
               </form>
             )}
           </div>
+          {isManager && (
+            <>
+              <h3 className="text-xl text-center my-3">
+                Bookings ({bookings.length})
+              </h3>
+              <div>
+                {bookings.length > 0 ? (
+                  bookings.map((booking) => (
+                    <ManagerBookingCard key={booking.id} booking={booking} />
+                  ))
+                ) : (
+                  <p className="text-center text-neutral-600">
+                    No bookings yet
+                  </p>
+                )}
+              </div>
+            </>
+          )}
           <div>
             <span className="flex gap-2 items-center justify-center mb-2">
               <div className="w-4 h-4 rounded-md bg-red-400"></div>
@@ -175,6 +216,12 @@ function Venue() {
             </span>
             <MyCalendar id={venue.id} />
           </div>
+          {!isManager && (
+            <div>
+              <h3 className="text-xl my-3">Venue Description</h3>
+              <p>{venue.description}</p>
+            </div>
+          )}
         </div>
       </div>
       {isManager && (
