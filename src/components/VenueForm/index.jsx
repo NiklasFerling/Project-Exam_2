@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Rating from "@mui/material/Rating";
-import { createVenue } from "../../api/venues/create";
+import { submitVenue } from "../../api/venues/submit";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -48,7 +48,7 @@ function VenueForm(props) {
         country: body.country,
       },
     };
-    createVenue(object, method).then((data) => {
+    submitVenue(object, props.method, props.venue?.id).then((data) => {
       console.log(data);
     });
   }
@@ -70,6 +70,7 @@ function VenueForm(props) {
             <input
               {...register("name")}
               className="w-full focus:outline-none"
+              defaultValue={props.venue?.name}
             />
           </div>
           <p>{errors.name?.message}</p>
@@ -80,7 +81,11 @@ function VenueForm(props) {
             >
               Image URL
             </label>
-            <input {...register("url")} className="w-full focus:outline-none" />
+            <input
+              {...register("url")}
+              className="w-full focus:outline-none"
+              defaultValue={props.venue?.media[0].url}
+            />
           </div>
           <p>{errors.url?.message}</p>
           <div className="border rounded-md p-2 relative">
@@ -90,7 +95,11 @@ function VenueForm(props) {
             >
               Image Description
             </label>
-            <input {...register("alt")} className="w-full focus:outline-none" />
+            <input
+              {...register("alt")}
+              className="w-full focus:outline-none"
+              defaultValue={props.venue?.media[0].alt}
+            />
           </div>
           <p>{errors.alt?.message}</p>
           <span className="flex gap-3">
@@ -105,6 +114,7 @@ function VenueForm(props) {
                 {...register("price")}
                 type="number"
                 className="w-full focus:outline-none"
+                defaultValue={props.venue?.price}
               />
             </div>
             <p>{errors.price?.message}</p>
@@ -119,6 +129,7 @@ function VenueForm(props) {
                 {...register("maxGuests")}
                 type="number"
                 className="w-full focus:outline-none"
+                defaultValue={props.venue?.maxGuests}
               />
             </div>
             <p>{errors.maxGuests?.message}</p>
@@ -150,6 +161,7 @@ function VenueForm(props) {
           <textarea
             {...register("description")}
             className="w-full h-full focus:outline-none"
+            defaultValue={props.venue?.description}
           />
         </div>
         <p>{errors.description?.message}</p>
@@ -162,7 +174,11 @@ function VenueForm(props) {
           >
             City
           </label>
-          <input {...register("city")} className="w-full focus:outline-none" />
+          <input
+            {...register("city")}
+            className="w-full focus:outline-none"
+            defaultValue={props.venue?.location.city}
+          />
         </div>
         <p>{errors.city?.message}</p>
         <div className="border rounded-md p-2 relative flex-2">
@@ -176,6 +192,7 @@ function VenueForm(props) {
             {...register("zip")}
             className="w-full focus:outline-none"
             type="number"
+            defaultValue={props.venue?.location.zip}
           />
         </div>
         <p>{errors.zip?.message}</p>
@@ -191,6 +208,7 @@ function VenueForm(props) {
           <input
             {...register("address")}
             className="w-full focus:outline-none"
+            defaultValue={props.venue?.location.address}
           />
         </div>
         <p>{errors.address?.message}</p>
@@ -204,6 +222,7 @@ function VenueForm(props) {
           <input
             {...register("country")}
             className="w-full focus:outline-none"
+            defaultValue={props.venue?.location.country}
           />
         </div>
         <p>{errors.country?.message}</p>

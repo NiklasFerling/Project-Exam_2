@@ -1,7 +1,7 @@
 import { load } from "../../storage/load";
 
-export async function createVenue(data, method) {
-  const url = "https://v2.api.noroff.dev/holidaze/venues/";
+export async function submitVenue(data, method, id) {
+  const url = `https://v2.api.noroff.dev/holidaze/venues/${id ? id : ""}`;
   const apiKey = load("API_KEY");
   const profile = load("profile");
 

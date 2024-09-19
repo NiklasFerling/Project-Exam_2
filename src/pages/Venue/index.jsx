@@ -177,7 +177,12 @@ function Venue() {
           </div>
         </div>
       </div>
-      {isManager && <VenueForm method="PUT" />}
+      {isManager && (
+        <div>
+          <h3 className="text-center text-xl mt-16 mb-8">Update Venue</h3>
+          <VenueForm method="PUT" venue={venue} />
+        </div>
+      )}
     </div>
   );
 }
