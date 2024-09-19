@@ -78,17 +78,19 @@ function VenueForm(props) {
           <div className="border rounded-md p-2 relative">
             <label
               htmlFor="name"
-              className="absolute -top-3 left-4 text-sm bg-white px-2"
+              className="flex gap-2 absolute -top-3 left-4 text-sm bg-white px-2"
             >
-              Venue Name
+              <p>Venue Name</p>
             </label>
             <input
               {...register("name")}
               className="w-full focus:outline-none"
               defaultValue={props.venue?.name}
             />
+            <p className="absolute top-1 right-3 text-red-600 text-3xl">
+              {errors.name && "*"}
+            </p>
           </div>
-          <p>{errors.name?.message}</p>
           <div className="border rounded-md p-2 relative">
             <label
               htmlFor="url"
@@ -101,8 +103,10 @@ function VenueForm(props) {
               className="w-full focus:outline-none"
               defaultValue={props.venue?.media[0].url}
             />
+            <p className="absolute top-1 right-3 text-red-600 text-3xl">
+              {errors.url && "*"}
+            </p>
           </div>
-          <p>{errors.url?.message}</p>
           <div className="border rounded-md p-2 relative">
             <label
               htmlFor="alt"
@@ -115,8 +119,10 @@ function VenueForm(props) {
               className="w-full focus:outline-none"
               defaultValue={props.venue?.media[0].alt}
             />
+            <p className="absolute top-1 right-3 text-red-600 text-3xl">
+              {errors.alt && "*"}
+            </p>
           </div>
-          <p>{errors.alt?.message}</p>
           <span className="flex gap-3">
             <div className="border rounded-md p-2 relative flex-1">
               <label
@@ -131,8 +137,10 @@ function VenueForm(props) {
                 className="w-full focus:outline-none"
                 defaultValue={props.venue?.price}
               />
+              <p className="absolute top-1 right-3 text-red-600 text-3xl">
+                {errors.price && "*"}
+              </p>
             </div>
-            <p>{errors.price?.message}</p>
             <div className="border rounded-md p-2 relative flex-1">
               <label
                 htmlFor="maxGuests"
@@ -146,10 +154,12 @@ function VenueForm(props) {
                 className="w-full focus:outline-none"
                 defaultValue={props.venue?.maxGuests}
               />
+              <p className="absolute top-1 right-3 text-red-600 text-3xl">
+                {errors.maxGuests && "*"}
+              </p>
             </div>
-            <p>{errors.maxGuests?.message}</p>
           </span>
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-2 relative">
             <label htmlFor="rating" className="text-sm bg-white px-2">
               Venue rating
             </label>
@@ -163,8 +173,10 @@ function VenueForm(props) {
               }}
               precision={1}
             />
+            <p className="absolute top-2 right-3 text-red-600 text-3xl">
+              {errors.rating && "*"}
+            </p>
           </div>
-          <p>{errors.rating?.message}</p>
         </div>
         <div className="border rounded-md p-2 relative flex-1">
           <label
@@ -178,8 +190,10 @@ function VenueForm(props) {
             className="w-full h-full focus:outline-none"
             defaultValue={props.venue?.description}
           />
+          <p className="absolute top-1 right-3 text-red-600 text-3xl">
+            {errors.description && "*"}
+          </p>
         </div>
-        <p>{errors.description?.message}</p>
       </div>
       <span className="flex gap-3">
         <div className="border rounded-md p-2 relative flex-1">
@@ -194,8 +208,10 @@ function VenueForm(props) {
             className="w-full focus:outline-none"
             defaultValue={props.venue?.location.city}
           />
+          <p className="absolute top-1 right-3 text-red-600 text-3xl">
+            {errors.city && "*"}
+          </p>
         </div>
-        <p>{errors.city?.message}</p>
         <div className="border rounded-md p-2 relative flex-2">
           <label
             htmlFor="zip"
@@ -209,8 +225,10 @@ function VenueForm(props) {
             type="number"
             defaultValue={props.venue?.location.zip}
           />
+          <p className="absolute top-1 right-3 text-red-600 text-3xl">
+            {errors.zip && "*"}
+          </p>
         </div>
-        <p>{errors.zip?.message}</p>
       </span>
       <span className="flex gap-3">
         <div className="border rounded-md p-2 relative mb-3 flex-1">
@@ -225,8 +243,10 @@ function VenueForm(props) {
             className="w-full focus:outline-none"
             defaultValue={props.venue?.location.address}
           />
+          <p className="absolute top-1 right-3 text-red-600 text-3xl">
+            {errors.name && "*"}
+          </p>
         </div>
-        <p>{errors.address?.message}</p>
         <div className="border rounded-md p-2 relative mb-3 flex-1">
           <label
             htmlFor="country"
@@ -239,8 +259,10 @@ function VenueForm(props) {
             className="w-full focus:outline-none"
             defaultValue={props.venue?.location.country}
           />
+          <p className="absolute top-1 right-3 text-red-600 text-3xl">
+            {errors.country && "*"}
+          </p>
         </div>
-        <p>{errors.country?.message}</p>
       </span>
       <div className="flex flex-wrap gap-5 max-w-96 mx-auto justify-center">
         <label
