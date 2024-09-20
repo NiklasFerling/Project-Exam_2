@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -8,6 +8,7 @@ import { TailSpin } from "react-loader-spinner";
 import { load } from "../../storage/load";
 import VenueForm from "../../components/VenueForm";
 import ManagerBookingCard from "../../components/ManagerBookingCard";
+import { AuthContext } from "../../contexts/authContext";
 
 const profile = load("profile");
 const id = window.location.search.replace("?", "");
@@ -21,6 +22,7 @@ function Venue() {
   const [maxGuests, setMaxGuests] = useState(1);
   const [isManager, setIsManager] = useState(false);
   const [bookings, setBookings] = useState([]);
+  const { isLoggedIn } = useContext(AuthContext);
 
   const schema = yup.object().shape({
     guests: yup
@@ -61,8 +63,10 @@ function Venue() {
       );
       const data = await response.json();
       console.log(data.data.bookings[0]);
-      if (data.data.owner.name === profile.name) {
-        setIsManager(true);
+      if (isLoggedIn) {
+        if (data.data.owner.name === profile.name) {
+          setIsManager(true);
+        }
       }
       setVenue(data.data);
       setBookings(data.data.bookings);
@@ -89,7 +93,11 @@ function Venue() {
     );
   }
   if (error) {
-    return <div>Error</div>;
+    return (
+      <div className="min-h-screen">
+        <h1 className="text-center text-3xl mt-40">An error occured</h1>
+      </div>
+    );
   }
   return (
     <div className="min-h-screen mb-20">
@@ -132,7 +140,7 @@ function Venue() {
                 <p className="text-2xl">{venue.price}kr/night</p>
               </div>
             )}
-            {!isManager && (
+            {!isManager && isLoggedIn && (
               <form
                 className="my-5 justify-center  mt-5"
                 onSubmit={handleSubmit(onBook)}
@@ -191,7 +199,7 @@ function Venue() {
               </form>
             )}
           </div>
-          {isManager && (
+          {isManager && isLoggedIn && (
             <>
               <h3 className="text-xl text-center my-3">
                 Bookings ({bookings.length})
@@ -209,13 +217,15 @@ function Venue() {
               </div>
             </>
           )}
-          <div>
-            <span className="flex gap-2 items-center justify-center mb-2">
-              <div className="w-4 h-4 rounded-md bg-red-400"></div>
-              <p>Not Available</p>
-            </span>
-            <MyCalendar id={venue.id} />
-          </div>
+          {isLoggedIn && (
+            <div>
+              <span className="flex gap-2 items-center justify-center mb-2">
+                <div className="w-4 h-4 rounded-md bg-red-400"></div>
+                <p>Not Available</p>
+              </span>
+              <MyCalendar id={venue.id} />
+            </div>
+          )}
           {!isManager && (
             <div>
               <h3 className="text-xl my-3">Venue Description</h3>
