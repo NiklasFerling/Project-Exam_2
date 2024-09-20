@@ -27,11 +27,12 @@ function Venue() {
   const schema = yup.object().shape({
     guests: yup
       .number("Please enter the number of guests")
+      .typeError("Please enter the number of guests")
       .min(1, "Please enter a number")
       .max(maxGuests, "Capacity for this venue is set at " + maxGuests)
       .required("Please enter the number of guests"),
-    dateFrom: yup.date().required("Please select a from date"),
-    dateTo: yup.date().required("Please selct a to date"),
+    dateFrom: yup.date().typeError("Please select a to date").required(),
+    dateTo: yup.date().typeError("Please select a to date").required(),
   });
 
   const {
@@ -46,6 +47,7 @@ function Venue() {
     createBooking({ ...data, venueId: id }).then((json) => {
       if (json.data) {
         setBookingSuccess("Booking Successful");
+        setBookingError(false);
       } else {
         console.log(json.errors[0].message);
         setBookingSuccess(false);

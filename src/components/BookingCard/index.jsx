@@ -90,16 +90,16 @@ function BookingCard({ booking }) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 mb-10">
+    <div className="flex flex-col md:flex-row mb-10 bg-white drop-shadow-2xl overflow-hidden rounded-xl">
       <Link to={"/venue/id?" + booking.venue.id}>
         <img
           src={booking.venue.media[0].url}
           alt={booking.venue.media[0].alt}
-          className="h-60 md:w-60 object-cover"
+          className="h-full md:w-60 object-cover"
         />
       </Link>
       {editMode ? (
-        <div>
+        <div className="p-5">
           <form onSubmit={handleSubmit(onUpdatePost)} className="flex flex-col">
             <Link to={"/venue/" + booking.venue.id}>
               <p className="text-xl mb-3">{booking.venue.name}</p>
@@ -147,7 +147,7 @@ function BookingCard({ booking }) {
           </form>
         </div>
       ) : (
-        <div>
+        <div className="p-5">
           <Link to={"/venue/id?" + booking.venue.id}>
             <p className="text-xl mb-3">{booking.venue.name}</p>
           </Link>
