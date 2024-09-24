@@ -15,6 +15,7 @@ function Venues({ url }) {
       const response = await fetch(url);
       const data = await response.json();
       setLoading(false);
+      setError(false);
       return data;
     } catch (error) {
       setError(true);
@@ -39,10 +40,12 @@ function Venues({ url }) {
     );
   }
   if (error) {
-    return <div>Something went wrong</div>;
+    return (
+      <div className="text-center text-neutral-600">Something went wrong</div>
+    );
   }
-  if (venues.length === 0) {
-    return <p className="text-white text-center">No posts found</p>;
+  if (!error && venues.length === 0) {
+    return <p className="text-center text-neutral-600">No venues found</p>;
   }
 
   return (

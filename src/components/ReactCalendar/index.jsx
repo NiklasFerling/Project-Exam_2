@@ -55,11 +55,11 @@ function MyCalendar(props) {
 
       const bookedDatesArray = relevantBookings.flatMap(getBookedDates);
       setBookedDates(bookedDatesArray);
-
+      setError(false);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching bookings:", error);
-      setError(true);
+      setError("Error fetching bookings");
       setIsLoading(false);
     }
   }
@@ -69,7 +69,8 @@ function MyCalendar(props) {
   }, []);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col justify-center items-center gap-3">
+      {error && <p className="text-red-500">{error}</p>}
       <Calendar tileClassName={tileClassName} className="drop-shadow-2xl" />
     </div>
   );
