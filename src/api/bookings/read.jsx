@@ -12,7 +12,7 @@ export async function fetchBookings() {
   };
 
   const response = await fetch(
-    `https://v2.api.noroff.dev/holidaze/profiles/${profile.name}/bookings?_owner=true&&_venue=true`,
+    `https://v2.api.noroff.dev/holidaze/profiles/${profile.name}/bookings?_owner=true&&_venue=true&&sort=dateFrom&sortOrder=asc`,
     options
   );
   const data = await response.json();

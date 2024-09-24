@@ -11,7 +11,6 @@ import { fetchBookings } from "../../api/bookings/read";
 import { TailSpin } from "react-loader-spinner";
 import BookingCard from "../../components/BookingCard";
 import VenueForm from "../../components/VenueForm";
-import Venues from "../../components/Venues";
 import YourVenues from "../../components/YourVenues";
 
 const schema = yup.object().shape({
