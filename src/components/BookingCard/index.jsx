@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { updateBooking } from "../../api/bookings/update";
+import { deleteBooking } from "../../api/bookings/delete";
 import { Link } from "react-router-dom";
 
 const schema = yup.object().shape({
@@ -13,26 +14,7 @@ const schema = yup.object().shape({
 });
 
 async function onDelete(id) {
-  const apiKey = load("API_KEY");
-  const token = load("accessToken");
-
-  try {
-    const response = await fetch(
-      "https://v2.api.noroff.dev/holidaze/bookings/" + id,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          "X-Noroff-API-Key": apiKey,
-        },
-      }
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  deleteBooking(id);
 }
 
 function BookingCard({ booking }) {

@@ -1,30 +1,12 @@
-import { load } from "../../storage/load";
 import { Link } from "react-router-dom";
+import { deleteVenue } from "../../api/venues/delete";
 
 function truncateText(text, maxLength = 25) {
   return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
 }
 
-async function onDelete(id) {
-  const profile = load("profile");
-  const apiKey = load("API_KEY");
-  const url = "https://v2.api.noroff.dev/holidaze/venues/" + id;
-  const options = {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${profile.accessToken}`,
-      "X-Noroff-API-Key": apiKey,
-    },
-  };
-
-  try {
-    const response = await fetch(url, options);
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
+function onDelete(id) {
+  deleteVenue(id);
 }
 
 function YourVenuesCard({ venue }) {

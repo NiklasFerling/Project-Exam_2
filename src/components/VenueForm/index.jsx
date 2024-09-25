@@ -334,7 +334,7 @@ function VenueForm(props) {
         Submit
       </button>
       <p className="text-green-500 text-center">{apiSuccess && "Success!"}</p>
-      {apiError && <p className="text-red-500">{apiError}</p>}
+      {apiError && <p className="text-red-500 text-center">{apiError}</p>}
     </form>
   );
 }
