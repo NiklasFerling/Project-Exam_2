@@ -20,7 +20,6 @@ async function onDelete(id) {
   try {
     const response = await fetch(url, options);
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
@@ -29,7 +28,6 @@ async function onDelete(id) {
 }
 
 function YourVenuesCard({ venue }) {
-  console.log(venue);
   return (
     <div className="border-none rounded-xl overflow-hidden drop-shadow-2xl bg-white mb-10">
       <img

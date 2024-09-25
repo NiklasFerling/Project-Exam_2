@@ -40,8 +40,6 @@ function LoginForm() {
         save("profile", data.data);
         save("accessToken", data.data.accessToken);
         await fetchApiKey().then((data) => {
-          console.log(data.data);
-
           save("API_KEY", data.data.key);
         });
         window.location.href = "/";

@@ -17,7 +17,6 @@ export async function createBooking(data) {
       }
     );
     const json = await response.json();
-    console.log(json);
     return json;
   } catch (error) {
     console.error(error);

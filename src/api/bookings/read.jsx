@@ -16,7 +16,5 @@ export async function fetchBookings() {
     options
   );
   const data = await response.json();
-  console.log(data);
-
   return data;
 }

@@ -5,8 +5,6 @@ export async function submitVenue(data, method, id) {
   const apiKey = load("API_KEY");
   const profile = load("profile");
 
-  console.log(data);
-
   const options = {
     method: method,
     headers: {

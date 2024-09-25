@@ -49,7 +49,6 @@ function Venue() {
         setBookingSuccess("Booking Successful");
         setBookingError(false);
       } else {
-        console.log(json.errors[0].message);
         setBookingSuccess(false);
         setBookingError(`Booking Failed: ${json.errors[0].message}`);
       }
@@ -64,7 +63,6 @@ function Venue() {
         `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`
       );
       const data = await response.json();
-      console.log(data.data.bookings[0]);
       if (isLoggedIn) {
         if (data.data.owner.name === profile.name) {
           setIsManager(true);

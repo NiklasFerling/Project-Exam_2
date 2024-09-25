@@ -8,8 +8,6 @@ function Venues({ url }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  console.log(url);
-
   async function fetchVenues() {
     try {
       const response = await fetch(url);

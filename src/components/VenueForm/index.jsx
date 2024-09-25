@@ -66,7 +66,6 @@ function VenueForm(props) {
       },
     };
     submitVenue(object, props.method, props.venue?.id).then((data) => {
-      console.log(data);
       if (data.data) {
         setApiSuccess(true);
         setApiError(false);

@@ -76,10 +76,8 @@ function BookingCard({ booking }) {
   });
 
   function onUpdatePost(data) {
-    console.log(data);
     updateBooking(data, booking.id).then((data) => {
       if (data.data) {
-        console.log("Success", data.data);
         setUpdateSuccess(true);
         setEditMode(false);
       } else if (data.errors) {

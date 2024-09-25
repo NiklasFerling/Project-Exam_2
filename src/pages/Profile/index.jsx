@@ -64,8 +64,6 @@ function Profile() {
         }
       );
       const data = await response.json();
-      console.log(data);
-
       setProfile(data.data);
       setLoading(false);
       return data;
@@ -81,8 +79,6 @@ function Profile() {
   useEffect(() => {
     fetchProfile();
     fetchBookings().then((data) => {
-      console.log(data.data[0]);
-
       setBookings(data.data);
     });
   }, []);
