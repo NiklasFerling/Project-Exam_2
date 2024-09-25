@@ -18,6 +18,7 @@ function Venues({ url }) {
     } catch (error) {
       setError(true);
       setLoading(false);
+      return error;
     }
   }
 
@@ -28,7 +29,7 @@ function Venues({ url }) {
       );
       setVenues(filteredVenues);
     });
-  }, [setVenues]);
+  }, [setVenues, fetchVenues]);
 
   if (loading) {
     return (

@@ -4,8 +4,6 @@ import "react-calendar/dist/Calendar.css";
 import { isSameDay } from "date-fns";
 import { load } from "../../storage/load";
 
-const datesToAddClassTo = ["2024-09-07", "2024-09-14", "2024-09-21"];
-
 function MyCalendar(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);

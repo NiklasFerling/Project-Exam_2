@@ -29,6 +29,7 @@ async function onDelete(id) {
       }
     );
     const data = await response.json();
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -38,11 +39,7 @@ function BookingCard({ booking }) {
   const [editMode, setEditMode] = useState(false);
   const [updateError, setUpdateError] = useState([]);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
   const dateFrom = new Date(booking.dateFrom)
     .toLocaleDateString("en-CA", {

@@ -37,7 +37,7 @@ function VenueForm(props) {
     if (props.venue) {
       setStarRating(props.venue.rating);
     }
-  }, []);
+  }, [props.venue]);
 
   function onSubmit(body) {
     const object = {

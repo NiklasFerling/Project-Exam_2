@@ -11,7 +11,6 @@ import ManagerBookingCard from "../../components/ManagerBookingCard";
 import { AuthContext } from "../../contexts/authContext";
 
 const profile = load("profile");
-const id = window.location.search.replace("?", "");
 
 function Venue() {
   const [venue, setVenue] = useState({});
@@ -83,7 +82,7 @@ function Venue() {
 
   useEffect(() => {
     idFetch();
-  }, [setVenue]);
+  }, [setVenue, idFetch]);
 
   if (loading) {
     return (
