@@ -29,7 +29,7 @@ function Venues({ url }) {
       );
       setVenues(filteredVenues);
     });
-  }, [setVenues, fetchVenues]);
+  }, [setVenues]);
 
   if (loading) {
     return (
