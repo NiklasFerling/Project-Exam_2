@@ -72,7 +72,7 @@ function BookingCard({ booking }) {
         <img
           src={booking.venue.media[0].url}
           alt={booking.venue.media[0].alt}
-          className="h-full md:w-60 object-cover"
+          className="h-56 md:h-full md:w-60 object-cover"
         />
       </Link>
       {editMode ? (
