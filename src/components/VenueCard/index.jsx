@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+// Card displaying details for a venue
+// Is used in the home page to display a list of all venues
+
 function VenueCard({ venue }) {
   function truncateText(text, maxLength = 25) {
     return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;

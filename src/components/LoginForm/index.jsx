@@ -7,6 +7,8 @@ import { save } from "../../storage/save";
 import { useState } from "react";
 import { fetchApiKey } from "../../api/auth/ApiKey";
 
+// The form displayed on login page
+
 const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),

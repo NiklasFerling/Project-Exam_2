@@ -4,6 +4,8 @@ import * as yup from "yup";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+// The form displayed on register page
+
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   email: yup

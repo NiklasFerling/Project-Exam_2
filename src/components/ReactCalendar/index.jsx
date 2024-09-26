@@ -4,6 +4,9 @@ import "react-calendar/dist/Calendar.css";
 import { isSameDay } from "date-fns";
 import { load } from "../../storage/load";
 
+// Calendar imported from react-calendar used to display unavailable dates for a specific venue
+// Used in venue page
+
 function MyCalendar(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);

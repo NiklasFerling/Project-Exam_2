@@ -5,6 +5,9 @@ import * as yup from "yup";
 import Rating from "@mui/material/Rating";
 import { submitVenue } from "../../api/venues/submit";
 
+// The form for creating a new venue and updating an existing venue
+// Is used in the profile page under "Manage venues" and on venue page if you are the owner
+
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   description: yup.string().required("Description is required"),

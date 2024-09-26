@@ -7,6 +7,9 @@ import { updateBooking } from "../../api/bookings/update";
 import { deleteBooking } from "../../api/bookings/delete";
 import { Link } from "react-router-dom";
 
+// Card displaying booking details
+// Is used in the profile page under the "Your bookings" section
+
 const schema = yup.object().shape({
   dateFrom: yup.date().required(),
   dateTo: yup.date().required(),

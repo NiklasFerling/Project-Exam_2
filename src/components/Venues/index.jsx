@@ -3,6 +3,9 @@ import { VenuesContext } from "../../contexts/venuesContext";
 import VenueCard from "../VenueCard";
 import { TailSpin } from "react-loader-spinner";
 
+// Displays a list of all venues
+// Is used in the home page
+
 function Venues({ url }) {
   const { venues, setVenues } = useContext(VenuesContext);
   const [error, setError] = useState(false);

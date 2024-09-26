@@ -1,3 +1,6 @@
+// Card displaying details for bookings on your own venues
+// Is used in the venue page when you are the owner of the venue
+
 function ManagerBookingCard({ booking }) {
   const dateFrom = new Date(booking.dateFrom)
     .toLocaleDateString("en-CA", {

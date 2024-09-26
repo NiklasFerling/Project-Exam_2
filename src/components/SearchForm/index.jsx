@@ -4,6 +4,8 @@ import * as yup from "yup";
 import { useContext } from "react";
 import { VenuesContext } from "../../contexts/venuesContext";
 
+// Search form on home page
+
 const schema = yup.object().shape({
   search: yup.string(),
 });

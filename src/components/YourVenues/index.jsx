@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { load } from "../../storage/load";
 import YourVenuesCard from "../YourVenuesCard";
 
+// Displays a list of all venues you own
+// Is used in the profile page under "Manage Venues"
+
 function YourVenues() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);

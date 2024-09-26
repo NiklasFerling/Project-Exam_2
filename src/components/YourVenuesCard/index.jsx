@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { deleteVenue } from "../../api/venues/delete";
 
+// Card displaying details for a venue you own
+// Is used in the "Manage venues" section of the profile page
+
 function truncateText(text, maxLength = 25) {
   return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
 }
