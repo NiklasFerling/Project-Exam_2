@@ -23,10 +23,12 @@ function VenueCard({ venue }) {
             <p>{venue.rating}</p>
           </span>
         </span>
-        <p className="text-neutral-600 text-sm">
-          <i className="fa-solid fa-location-dot mr-1"></i>
-          {venue.location.city}
-        </p>
+        {venue.location.city && (
+          <p className="text-neutral-600 text-sm">
+            <i className="fa-solid fa-location-dot mr-1"></i>
+            {venue.location.city}
+          </p>
+        )}
         <p className="text-xl mt-5">{venue.price}kr</p>
       </div>
     </Link>

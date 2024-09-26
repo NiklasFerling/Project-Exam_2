@@ -116,9 +116,11 @@ function Venue() {
                   <span className="flex mb-5 items-center">
                     <i className="fa-solid fa-star mr-1"></i>
                     <p className="mr-4">{venue.rating}</p>
-                    <p>
-                      {venue.location.city}, {venue.location.country}
-                    </p>
+                    {venue.location.city && (
+                      <p>
+                        {venue.location.city}, {venue.location.country}
+                      </p>
+                    )}
                   </span>
                   <span className="flex gap-3 text-neutral-500 items-center justify-center">
                     {venue.meta.wifi && (

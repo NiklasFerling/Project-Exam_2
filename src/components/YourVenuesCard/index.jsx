@@ -25,8 +25,12 @@ function YourVenuesCard({ venue }) {
           </button>
         </span>
         <p className="text-neutral-600 text-sm">
-          <i className="fa-solid fa-location-dot mr-1"></i>
-          {venue.location.city}
+          {venue.location.city && (
+            <span>
+              <i className="fa-solid fa-location-dot mr-1"></i>
+              {venue.location.city}
+            </span>
+          )}
           <i className="fa-solid fa-star ml-3 mr-1"></i>
           {venue.rating}
         </p>
