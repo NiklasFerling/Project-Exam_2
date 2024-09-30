@@ -13,14 +13,14 @@ This project is a web application that allows users to create and manage holiday
 
 ## Technologies Used
 
-- React
-- React Router
-- React Hook Form
-- Yup
-- Noroff API v2
-- Tailwind CSS
-- MUI
-- React Loader Spinner
+- [React](https://react.dev/)
+- [React Router](https://reactrouter.com/en/main)
+- [React Hook Form](https://react-hook-form.com/)
+- [Yup](https://www.npmjs.com/package/yup/v/1.0.0-alpha.3)
+- [Noroff API v2](https://docs.noroff.dev/docs/v2)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [MUI](https://mui.com/)
+- [React Loader Spinner](https://www.npmjs.com/package/react-loader-spinner)
 
 ## Installation
 
